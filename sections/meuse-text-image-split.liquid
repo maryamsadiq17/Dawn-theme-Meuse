@@ -1,149 +1,162 @@
 {% comment %}
   ============================================================
-  MEUSE — TEXT & IMAGE SPLIT SECTION
+  MEUSE — TEXT & IMAGE SPLIT SECTION (PIXEL PERFECT FIGMA)
   File: sections/meuse-text-image-split.liquid
-  Layout: Left Image, Right Text Block overlapping an asymmetrical background box.
   ============================================================
 {% endcomment %}
 
 {%- style -%}
-  /* ── Section General Spacing ─────────────────────────── */
+  /* ── Main Section Wrapper ───────────────────────────── */
   #mtis-{{ section.id }} {
-    padding-top: {{ section.settings.padding_top_desktop }}px;
-    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    position: relative;
+    width: 100%;
+    min-height: {{ section.settings.section_height_desktop }}px;
     background-color: {{ section.settings.section_bg }};
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  /* ── 50/50 Split Grid (Edge-to-Edge) ─────────────────── */
+  #mtis-{{ section.id }} .mtis__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    min-height: {{ section.settings.section_height_desktop }}px;
+    position: relative;
+    z-index: 2; /* Sits above the background vectors */
+  }
+
+  /* ── Left Side: Image ────────────────────────────────── */
+  #mtis-{{ section.id }} .mtis__image-column {
+    width: 100%;
+    height: 100%;
     overflow: hidden;
   }
 
-  /* ── Inner Grid Container ────────────────────────────── */
-  #mtis-{{ section.id }} .mtis__inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 4%;
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    align-items: center;
-    position: relative;
-  }
-
-  /* ── Left Side: Image Layout ────────────────────────── */
-  #mtis-{{ section.id }} .mtis__image-wrapper {
-    position: relative;
-    z-index: 2;
-    font-size: 0; /* Fixes stray inline spacing */
-  }
-
-  #mtis-{{ section.id }} .mtis__image-wrapper img,
-  #mtis-{{ section.id }} .mtis__image-wrapper .mtis__placeholder {
+  #mtis-{{ section.id }} .mtis__image-column img,
+  #mtis-{{ section.id }} .mtis__image-column .mtis__placeholder {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
     object-fit: cover;
   }
 
   #mtis-{{ section.id }} .mtis__placeholder {
     background-color: #e2e2e2;
-    aspect-ratio: 4 / 3;
   }
 
-  /* ── Right Side: Text & Background Block ──────────────── */
+  /* ── Right Side: Text Card ───────────────────────────── */
   #mtis-{{ section.id }} .mtis__text-column {
-    position: relative;
-    padding: 10% 8% 10% 12%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  /* Asymmetrical overlapping background block */
-  #mtis-{{ section.id }} .mtis__text-column::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: -100vw; /* Extends gracefully past the right side screen viewport */
-    bottom: 0;
-    left: 0;
     background-color: {{ section.settings.block_bg }};
-    z-index: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5% 10% 5% 12%; /* Generous inner spacing matching Figma */
+    box-sizing: border-box;
   }
 
   #mtis-{{ section.id }} .mtis__content {
-    position: relative;
-    z-index: 2;
-    max-width: 460px;
+    max-width: 540px; /* Prevents text from stretching too wide */
+    width: 100%;
   }
 
-  /* ── Typography Settings ────────────────────────────── */
+  /* ── Typography ──────────────────────────────────────── */
   #mtis-{{ section.id }} .mtis__heading {
     font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: {{ section.settings.heading_size }}px;
     font-weight: 400;
-    line-height: 1.3;
+    line-height: 1.25;
     color: {{ section.settings.heading_color }};
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin: 0 0 24px 0;
+    margin: 0 0 28px 0;
   }
 
   #mtis-{{ section.id }} .mtis__text {
     font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: {{ section.settings.text_size }}px;
     font-weight: 400;
-    line-height: 1.6;
+    line-height: 1.65;
     color: {{ section.settings.text_color }};
     letter-spacing: 0.01em;
     margin: 0;
   }
 
   #mtis-{{ section.id }} .mtis__text p {
-    margin: 0 0 16px 0;
+    margin: 0 0 18px 0;
   }
   #mtis-{{ section.id }} .mtis__text p:last-child {
     margin: 0;
   }
 
-  /* Decorative wavy topography lines matching design background */
-  #mtis-{{ section.id }} .mtis__bg-lines {
+  /* ── Vector Topography Elements ───────────────────────── */
+  #mtis-{{ section.id }} .mtis__vector {
     position: absolute;
-    top: -40px;
-    right: -20px;
-    width: 240px;
-    opacity: 0.25;
-    z-index: 2;
+    z-index: 1;
     pointer-events: none;
+    opacity: {{ section.settings.vector_opacity | divided_by: 100.0 }};
   }
 
-  /* ── Responsive Viewports (Tablet & Mobile Breakdown) ── */
+  /* Top Right Vector Box */
+  #mtis-{{ section.id }} .mtis__vector--top-right {
+    top: 0;
+    right: 0;
+    width: clamp(250px, 22vw, 420px);
+    transform: translate(5%, -5%); /* Shifts slightly out like the design */
+  }
+
+  /* Bottom Left Vector Box */
+  #mtis-{{ section.id }} .mtis__vector--bottom-left {
+    bottom: 0;
+    left: 0;
+    width: clamp(220px, 18vw, 340px);
+    transform: translate(-5%, 5%);
+  }
+
+  #mtis-{{ section.id }} .mtis__vector svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ── Responsive Mobile/Tablet Breakdowns ──────────────── */
   @media screen and (max-width: 989px) {
     #mtis-{{ section.id }} {
-      padding-top: {{ section.settings.padding_top_mobile }}px;
-      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      min-height: auto;
+      display: block;
     }
 
-    #mtis-{{ section.id }} .mtis__inner {
+    #mtis-{{ section.id }} .mtis__grid {
       grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    #mtis-{{ section.id }} .mtis__image-column {
+      height: 450px; /* Fixed proportional height for mobile viewports */
     }
 
     #mtis-{{ section.id }} .mtis__text-column {
-      padding: 48px 32px;
-      margin-top: -20px; /* Slight stack overlap on mobile devices */
-    }
-
-    #mtis-{{ section.id }} .mtis__text-column::before {
-      left: -100vw; /* Extends to full width background strip on mobile view */
-    }
-
-    #mtis-{{ section.id }} .mtis__content {
-      max-width: 100%;
+      padding: 60px 24px;
+      justify-content: center;
     }
 
     #mtis-{{ section.id }} .mtis__heading {
       font-size: {{ section.settings.heading_size_mobile }}px;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     #mtis-{{ section.id }} .mtis__text {
       font-size: {{ section.settings.text_size_mobile }}px;
+    }
+
+    /* scale down background vectors safely for mobile screen spaces */
+    #mtis-{{ section.id }} .mtis__vector--top-right {
+      width: 180px;
+    }
+    #mtis-{{ section.id }} .mtis__vector--bottom-left {
+      width: 140px;
     }
   }
 {%- endstyle -%}
@@ -151,15 +164,28 @@
 {{- 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&display=swap' | stylesheet_tag -}}
 
 <div id="mtis-{{ section.id }}" class="meuse-text-image-split">
-  <div class="mvs__inner mtis__inner">
+  
+  <div class="mtis__vector mtis__vector--top-right">
+    <svg viewBox="0 0 357 282" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M72.5 0C110.5 83.5 240.5 45.5 357 101M0 45C86.5 111.5 158.5 20.5 357 149M0 115C118.5 186.5 143.5 69.5 357 197.5M0 191.5C149.5 261 179.5 119.5 357 241M41 281.5C193.5 329.5 233.5 178 357 281.5" stroke="{{ section.settings.vector_color }}" stroke-width="0.6"/>
+    </svg>
+  </div>
+
+  <div class="mtis__vector mtis__vector--bottom-left">
+    <svg viewBox="0 0 294 227" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0C46.5 36.5 83 91.5 59.5 137.5C36 183.5 -17.5 192.5 0 227M0 49C78.5 85.5 125.5 127 109 167C92.5 207 41.5 208.5 54 227M0 102C106 136.5 162.5 160 152 192C141.5 224 99.5 219.5 108.5 227M0 151.5C124 179.5 190.5 191 189 211C187.5 231 154.5 224.5 160.5 227M0 199.5C136 218 214 221.5 217.5 225C221 228.5 199.5 226.5 204.5 227" stroke="{{ section.settings.vector_color }}" stroke-width="0.6"/>
+    </svg>
+  </div>
+
+  <div class="mtis__grid">
     
-    <div class="mtis__image-wrapper">
+    <div class="mtis__image-column">
       {%- if section.settings.image != blank -%}
-        {%- capture sizes -%}(min-width: 990px) 55vw, 100vw{%- endcapture -%}
-        {{ section.settings.image | image_url: width: 1400 | image_tag:
+        {%- capture sizes -%}(min-width: 990px) 50vw, 100vw{%- endcapture -%}
+        {{ section.settings.image | image_url: width: 1600 | image_tag:
           loading: 'lazy',
           sizes: sizes,
-          widths: '400, 600, 800, 1000, 1200, 1400',
+          widths: '400, 600, 800, 1000, 1200, 1400, 1600',
           alt: section.settings.heading
         }}
       {%- else -%}
@@ -168,11 +194,6 @@
     </div>
 
     <div class="mtis__text-column">
-      
-      <svg class="mtis__bg-lines" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10,0 C30,40 70,20 100,50 M0,20 C40,50 60,10 100,70 M0,50 C50,80 50,30 100,90" stroke="{{ section.settings.text_color }}" stroke-width="0.5"/>
-      </svg>
-
       <div class="mtis__content">
         {%- if section.settings.heading != blank -%}
           <h2 class="mtis__heading">{{ section.settings.heading }}</h2>
@@ -197,7 +218,7 @@
   "settings": [
     {
       "type": "header",
-      "content": "Media Content"
+      "content": "Media Asset"
     },
     {
       "type": "image_picker",
@@ -206,46 +227,78 @@
     },
     {
       "type": "header",
-      "content": "Section Colors"
+      "content": "Section Configuration"
+    },
+    {
+      "type": "range",
+      "id": "section_height_desktop",
+      "label": "Desktop Height (px)",
+      "min": 500,
+      "max": 1200,
+      "step": 4,
+      "default": 952
     },
     {
       "type": "color",
       "id": "section_bg",
-      "label": "Outer Canvas background",
+      "label": "Outer Canvas Background",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "block_bg",
-      "label": "Text block background box",
+      "label": "Text Block Background Box",
       "default": "#d2d7cb"
+    },
+    {
+      "type": "header",
+      "content": "Vector Lines Artwork"
+    },
+    {
+      "type": "color",
+      "id": "vector_color",
+      "label": "Vector Stroke Color",
+      "default": "#2a2a2a"
+    },
+    {
+      "type": "range",
+      "id": "vector_opacity",
+      "label": "Vector Opacity (%)",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Typography Colors"
     },
     {
       "type": "color",
       "id": "heading_color",
-      "label": "Heading text color",
+      "label": "Heading Text Color",
       "default": "#2a2a2a"
     },
     {
       "type": "color",
       "id": "text_color",
-      "label": "Body text color",
+      "label": "Body Text Color",
       "default": "#2a2a2a"
     },
     {
       "type": "header",
-      "content": "Typography Content"
+      "content": "Typography Text Content"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading text",
+      "label": "Heading Text",
       "default": "Simple, natural solutions that work."
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Body paragraph text",
+      "label": "Body Paragraph Text",
       "default": "<p>At Meuse, we believe that nature has the power to soothe and calm the mind. That is why we focus on creating 100% natural products that are designed to fit seamlessly into your daily routines, and infuse them with moments of purposeful care.</p>"
     },
     {
@@ -271,24 +324,6 @@
       "default": 18
     },
     {
-      "type": "range",
-      "id": "padding_top_desktop",
-      "label": "Padding Top (px)",
-      "min": 0,
-      "max": 140,
-      "step": 5,
-      "default": 60
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom_desktop",
-      "label": "Padding Bottom (px)",
-      "min": 0,
-      "max": 140,
-      "step": 5,
-      "default": 60
-    },
-    {
       "type": "header",
       "content": "Mobile Sizing"
     },
@@ -309,24 +344,6 @@
       "max": 20,
       "step": 1,
       "default": 15
-    },
-    {
-      "type": "range",
-      "id": "padding_top_mobile",
-      "label": "Mobile Padding Top (px)",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "default": 30
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom_mobile",
-      "label": "Mobile Padding Bottom (px)",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "default": 30
     }
   ],
   "presets": [
