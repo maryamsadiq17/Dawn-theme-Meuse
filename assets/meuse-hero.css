@@ -1,76 +1,202 @@
 /* ============================================================
-   MEUSE HERO — Dawn image-banner.liquid override
-   Matches Main_slider.png Figma design exactly
+   MEUSE HERO — Complete fix to match Figma exactly
+   Replaces previous meuse-hero.css entirely
    ============================================================ */
 
-/* Full width, no side padding */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@400;500&display=swap');
+
+/* ── 1. Remove Dawn's dark overlay / color scheme tint ───── */
+.banner .banner__media::after,
+.banner::after,
+.banner .media::after {
+  display: none !important;
+  background: none !important;
+  opacity: 0 !important;
+}
+
+/* Force color scheme to not tint the banner */
+.banner.color-scheme-1,
+.banner.color-background-1,
+.banner.color-background-2,
+.banner.gradient {
+  background: transparent !important;
+}
+
+/* Remove any inherited overlay from Dawn */
+.banner__media .media {
+  background: transparent !important;
+}
+
+/* ── 2. Section sizing ────────────────────────────────────── */
 .banner {
   width: 100% !important;
   max-width: 100% !important;
   padding: 0 !important;
   margin: 0 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  min-height: 600px !important;
 }
 
-/* Section height */
-.banner__media {
-  min-height: 620px !important;
+.banner__media,
+.banner__media.banner__media--adapt {
+  min-height: 600px !important;
+  height: 600px !important;
 }
 
-/* Make image cover fully */
-.banner__media img {
+/* ── 3. Background image — bright, no darkening ──────────── */
+.banner__media img,
+.banner__media .media img {
   object-fit: cover !important;
-  object-position: center !important;
+  object-position: center center !important;
   width: 100% !important;
   height: 100% !important;
+  filter: none !important;          /* remove any brightness filter   */
+  opacity: 1 !important;            /* full brightness like Figma      */
 }
 
-/* Content box — centered */
+/* ── 4. Very subtle custom overlay (not Dawn's) ──────────── */
+.banner__media::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: rgba(0, 0, 0, 0.12) !important;  /* barely there — Figma is bright */
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+
+/* ── 5. Content positioning ──────────────────────────────── */
 .banner__content {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 2 !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
   text-align: center !important;
+  width: 100% !important;
   padding: 0 5% !important;
 }
 
-/* "Visit our" — top line */
-.banner__heading {
-  font-family: 'Cormorant Garamond', Georgia, serif !important;
-  font-size: clamp(2rem, 4.5vw, 3.6rem) !important;
-  font-weight: 400 !important;
-  color: #ffffff !important;
-  line-height: 1.15 !important;
-  letter-spacing: 0.01em !important;
-  margin: 0 !important;
+.banner__content-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
 }
 
-/* SHOP NOW button */
+/* ── 6. Hide Dawn's default heading — we replace via JS ─── */
+.banner__heading {
+  display: none !important;
+}
+
+/* ── 7. Custom heading injected by meuse-hero.js ──────────── */
+.meuse-hero-heading {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0 !important;
+  margin-bottom: 2rem !important;
+}
+
+.meuse-hero-heading .line-top,
+.meuse-hero-heading .line-store {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-size: clamp(2.4rem, 4.5vw, 4rem) !important;
+  font-weight: 400 !important;
+  color: #ffffff !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0.01em !important;
+  display: block !important;
+}
+
+.meuse-hero-heading .line-amazon-wrap {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0 !important;
+}
+
+.meuse-hero-heading .line-amazon-word {
+  font-family: 'Amazon Ember', 'Helvetica Neue', Arial, sans-serif !important;
+  font-size: clamp(3rem, 6vw, 5.2rem) !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1 !important;
+  display: block !important;
+}
+
+.meuse-hero-heading .line-amazon-arrow {
+  display: block !important;
+  width: clamp(80px, 10vw, 140px) !important;
+  margin: 0.1em auto 0 !important;
+}
+
+/* ── 8. SHOP NOW button ───────────────────────────────────── */
+.banner__buttons {
+  z-index: 2 !important;
+  position: relative !important;
+}
+
 .banner__buttons .button,
-.banner__buttons .button--primary {
+.banner__buttons .button--primary,
+.banner__buttons a.button {
   background-color: #3a4a2f !important;
   color: #ffffff !important;
   border: 1.5px solid #3a4a2f !important;
   border-radius: 0 !important;
-  font-family: 'Jost', sans-serif !important;
+  font-family: 'Jost', 'Gill Sans', sans-serif !important;
   font-size: 11px !important;
   font-weight: 500 !important;
-  letter-spacing: 0.2em !important;
+  letter-spacing: 0.22em !important;
   text-transform: uppercase !important;
-  padding: 14px 36px !important;
-  transition: background 0.25s ease, color 0.25s ease !important;
+  padding: 15px 40px !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease !important;
+  box-shadow: none !important;
 }
 
 .banner__buttons .button:hover,
-.banner__buttons .button--primary:hover {
+.banner__buttons .button--primary:hover,
+.banner__buttons a.button:hover {
   background-color: transparent !important;
   color: #ffffff !important;
   border-color: #ffffff !important;
 }
 
-/* Mobile */
+/* Remove Dawn's button arrow icon */
+.banner__buttons .button .icon,
+.banner__buttons .button svg {
+  display: none !important;
+}
+
+/* ── 9. Responsive ────────────────────────────────────────── */
+@media screen and (max-width: 989px) {
+  .banner,
+  .banner__media,
+  .banner__media.banner__media--adapt {
+    min-height: 480px !important;
+    height: 480px !important;
+  }
+}
+
 @media screen and (max-width: 749px) {
-  .banner__media {
-    min-height: 400px !important;
+  .banner,
+  .banner__media,
+  .banner__media.banner__media--adapt {
+    min-height: 380px !important;
+    height: 380px !important;
+  }
+
+  .banner__buttons .button,
+  .banner__buttons .button--primary {
+    padding: 13px 28px !important;
+    font-size: 10px !important;
   }
 }
