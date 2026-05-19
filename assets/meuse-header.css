@@ -1,0 +1,316 @@
+/*
+ * ============================================================
+ *  DAWN THEME — MEUSE HEADER OVERRIDE
+ *  Matches your Figma exactly:
+ *  - White background
+ *  - Logo far left
+ *  - "SHOP" text link far right only
+ *  - Thin teal/blue bottom border
+ *  - No search, no cart icon, no country selector visible
+ *
+ *  INSTALL:
+ *  1. Save as assets/meuse-header.css
+ *  2. In layout/theme.liquid just before </head> add:
+ *     {{ 'meuse-header.css' | asset_url | stylesheet_tag }}
+ *  3. shopify theme push --only assets/meuse-header.css
+ * ============================================================ */
+
+
+/* ============================================================
+   SECTION 1 — CSS VARIABLES
+   Edit these two lines to change the whole header instantly
+   ============================================================ */
+:root {
+  --mh-bg:           #ffffff;           /* header background               */
+  --mh-border:       #5b9bb5;           /* bottom border — teal/blue line  */
+  --mh-border-width: 2px;               /* thickness of the bottom border  */
+  --mh-text:         #1a1a1a;           /* logo wordmark + SHOP color      */
+  --mh-text-hover:   #5b9bb5;           /* SHOP hover color                */
+  --mh-height:       72px;              /* header height desktop           */
+  --mh-height-mob:   56px;              /* header height mobile            */
+  --mh-padding:      0 40px;            /* left/right breathing room       */
+  --mh-font:         'Cormorant Garamond', Georgia, serif; /* logo font    */
+  --mh-font-nav:     'Jost', 'Gill Sans', sans-serif;      /* SHOP font    */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Jost:wght@400;500&display=swap');
+
+
+/* ============================================================
+   SECTION 2 — ANNOUNCEMENT BAR
+   Matches Meuse: dark green bg, sage green uppercase text
+   ============================================================ */
+.announcement-bar {
+  background-color: #2e3d28 !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+.announcement-bar__message,
+.announcement-bar__message p,
+.announcement-bar__message a {
+  font-family: var(--mh-font-nav) !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  color: #8aab6e !important;
+  text-decoration: none !important;
+}
+
+
+/* ============================================================
+   SECTION 3 — HEADER WRAPPER
+   White background, no shadow, thin teal bottom border
+   ============================================================ */
+.header-wrapper {
+  background-color: var(--mh-bg) !important;
+  border-bottom: var(--mh-border-width) solid var(--mh-border) !important;
+  box-shadow: none !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+}
+
+/* Dawn sometimes adds a gradient class — override it */
+.header-wrapper.gradient {
+  background: var(--mh-bg) !important;
+}
+
+header.header {
+  background-color: var(--mh-bg) !important;
+  height: var(--mh-height) !important;
+  padding: var(--mh-padding) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  max-width: 100% !important;
+}
+
+
+/* ============================================================
+   SECTION 4 — LOGO (left side)
+   Your SVG/PNG image logo — white filter removed since bg is white
+   ============================================================ */
+.header__heading {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.header__heading-link {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+}
+
+/* Image logo sizing */
+.header__heading-logo {
+  max-height: 32px !important;    /* adjust to fit your logo height */
+  max-width: 160px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  /* If your logo is dark/black it will show perfectly on white bg */
+  /* If your logo is light/white, add: filter: invert(1); */
+}
+
+/* Text fallback — shown when no logo image is uploaded */
+.header__heading-link .h2,
+.header__heading-link span {
+  font-family: var(--mh-font) !important;
+  font-size: 26px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.02em !important;
+  color: var(--mh-text) !important;
+  text-transform: lowercase !important;
+  line-height: 1 !important;
+}
+
+
+/* ============================================================
+   SECTION 5 — NAVIGATION LINKS
+   Only "SHOP" shows — hide everything else
+   ============================================================ */
+
+/* Hide the full nav menu (HOME, CATALOG, CONTACT etc.) */
+.header__menu,
+.header__inline-menu,
+nav.header__menu {
+  display: none !important;
+}
+
+/* Show ONLY the first nav item if you want just SHOP visible
+   OR use the header icons area — see section 6 below          */
+
+/* Style all nav links in case any are shown */
+.list-menu__item .link,
+.header__menu-item .link {
+  font-family: var(--mh-font-nav) !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: var(--mh-text) !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+.list-menu__item .link:hover,
+.header__menu-item .link:hover {
+  color: var(--mh-text-hover) !important;
+}
+
+
+/* ============================================================
+   SECTION 6 — RIGHT SIDE ICONS
+   Hide search, account, cart icons and country selector
+   Show only a clean "SHOP" text link
+   ============================================================ */
+
+/* Hide search icon */
+.header__icon--search {
+  display: none !important;
+}
+
+/* Hide account icon */
+.header__icon--account {
+  display: none !important;
+}
+
+/* Hide cart icon */
+.header__icon--cart,
+.header__icon--cart-toggle {
+  display: none !important;
+}
+
+/* Hide country/language selector */
+.localization-form,
+.disclosure {
+  display: none !important;
+}
+
+/* Hide the icons wrapper if all icons are hidden */
+.header__icons {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0 !important;
+}
+
+/* ── ADD A "SHOP" LINK ON THE RIGHT ──────────────────────────
+   This injects a clean SHOP text link using CSS :after
+   OR you can add it directly in sections/header.liquid
+   See the HTML snippet at the bottom of this file           */
+
+/* Target the last nav item if your menu has a SHOP link */
+.header__menu-item:last-child .link,
+.list-menu--inline > .list-menu__item:last-child .link {
+  font-family: var(--mh-font-nav) !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  color: var(--mh-text) !important;
+}
+
+
+/* ============================================================
+   SECTION 7 — SHOP LINK INJECTION
+   Add this HTML manually in sections/header.liquid
+   Find the closing </header> tag and paste just before it:
+
+   <a href="/collections/all" class="meuse-shop-link">Shop</a>
+
+   Then these styles apply automatically:
+   ============================================================ */
+.meuse-shop-link {
+  font-family: var(--mh-font-nav) !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  color: var(--mh-text) !important;
+  text-decoration: none !important;
+  margin-left: auto !important;
+  padding: 4px 0 !important;
+  transition: color 0.2s ease !important;
+  position: relative;
+}
+
+.meuse-shop-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--mh-border);
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.meuse-shop-link:hover {
+  color: var(--mh-text-hover) !important;
+}
+
+.meuse-shop-link:hover::after {
+  width: 100%;
+}
+
+
+/* ============================================================
+   SECTION 8 — MOBILE HAMBURGER
+   Hide it since Meuse header has no mobile menu icon
+   (only logo + SHOP on mobile too)
+   ============================================================ */
+.header__menu-toggle {
+  display: none !important;
+}
+
+
+/* ============================================================
+   SECTION 9 — MOBILE RESPONSIVE
+   ============================================================ */
+@media screen and (max-width: 749px) {
+  header.header {
+    height: var(--mh-height-mob) !important;
+    padding: 0 20px !important;
+  }
+
+  .header__heading-logo {
+    max-height: 26px !important;
+  }
+
+  .header__heading-link .h2,
+  .header__heading-link span {
+    font-size: 20px !important;
+  }
+
+  .meuse-shop-link {
+    font-size: 11px !important;
+  }
+}
+
+
+/* ============================================================
+   SECTION 10 — WHAT TO ADD IN sections/header.liquid
+   ============================================================
+
+   STEP 1: Find this line near the bottom of header.liquid:
+
+     {%- if section.settings.enable_sticky_header -%}
+
+   STEP 2: Just ABOVE the closing </header> tag, paste:
+
+     <a href="{{ routes.collections_url }}" class="meuse-shop-link">
+       {{ section.settings.shop_link_label | default: 'Shop' }}
+     </a>
+
+   STEP 3: Add a schema setting for the label (optional):
+   Inside the "settings" array in {% schema %} add:
+
+     {
+       "type": "text",
+       "id": "shop_link_label",
+       "label": "Shop link text",
+       "default": "Shop"
+     }
+
+   ============================================================ */
