@@ -300,6 +300,7 @@
     </script>
 
     {{ 'meuse-header.css' | asset_url | stylesheet_tag }}
+    {{ 'meuse-hero.css' | asset_url | stylesheet_tag }}
 
     
   </head>
@@ -378,5 +379,8 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+
+    {{ 'meuse-hero.js' | asset_url | script_tag }}
+
   </body>
 </html>

@@ -1,0 +1,76 @@
+/* ============================================================
+   MEUSE HERO — Dawn image-banner.liquid override
+   Matches Main_slider.png Figma design exactly
+   ============================================================ */
+
+/* Full width, no side padding */
+.banner {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Section height */
+.banner__media {
+  min-height: 620px !important;
+}
+
+/* Make image cover fully */
+.banner__media img {
+  object-fit: cover !important;
+  object-position: center !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Content box — centered */
+.banner__content {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 0 5% !important;
+}
+
+/* "Visit our" — top line */
+.banner__heading {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-size: clamp(2rem, 4.5vw, 3.6rem) !important;
+  font-weight: 400 !important;
+  color: #ffffff !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0.01em !important;
+  margin: 0 !important;
+}
+
+/* SHOP NOW button */
+.banner__buttons .button,
+.banner__buttons .button--primary {
+  background-color: #3a4a2f !important;
+  color: #ffffff !important;
+  border: 1.5px solid #3a4a2f !important;
+  border-radius: 0 !important;
+  font-family: 'Jost', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  padding: 14px 36px !important;
+  transition: background 0.25s ease, color 0.25s ease !important;
+}
+
+.banner__buttons .button:hover,
+.banner__buttons .button--primary:hover {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+/* Mobile */
+@media screen and (max-width: 749px) {
+  .banner__media {
+    min-height: 400px !important;
+  }
+}
