@@ -19,7 +19,6 @@
 {% endcomment %}
 
 {%- style -%}
-
   /* ── Section wrapper ─────────────────────────────── */
   #meuse-hero-{{ section.id }} {
     position: relative;
@@ -163,13 +162,14 @@
       flex-wrap: wrap;
     }
   }
-
 {%- endstyle -%}
 
-{{- 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Jost:wght@400;500&display=swap' | stylesheet_tag -}}
+{{-
+  'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Jost:wght@400;500&display=swap'
+  | stylesheet_tag
+-}}
 
 <section id="meuse-hero-{{ section.id }}" class="meuse-hero">
-
   <!-- ① Background image -->
   <div class="mh__bg">
     {%- if section.settings.bg_image != blank -%}
@@ -198,7 +198,6 @@
 
   <!-- ③ Content -->
   <div class="mh__content">
-
     <!-- Line 1: "Visit our" -->
     <span class="mh__line-top">
       {{- section.settings.line_top -}}
@@ -252,14 +251,14 @@
       <a
         href="{{ section.settings.btn_link | default: routes.collections_url }}"
         class="mh__btn"
-        {%- if section.settings.btn_new_tab -%} target="_blank" rel="noopener noreferrer"{%- endif -%}
+        {%- if section.settings.btn_new_tab -%}
+          target="_blank" rel="noopener noreferrer"
+        {%- endif -%}
       >
         {{- section.settings.btn_text -}}
       </a>
     {%- endif -%}
-
   </div>
-
 </section>
 
 {% schema %}
@@ -283,8 +282,8 @@
       "label": "Section height (px)",
       "min": 400,
       "max": 900,
-      "step": 20,
-      "default": 650
+      "step": 50,
+      "default": 750
     },
     {
       "type": "range",
