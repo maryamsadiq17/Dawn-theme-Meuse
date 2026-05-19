@@ -1,0 +1,316 @@
+{% comment %}
+  ============================================================
+  MEUSE — VALUES STRIP SECTION
+  File: sections/meuse-values-strip.liquid
+
+  Layout (matches Values.png Figma exactly):
+  - Warm off-white background (#f0ece3)
+  - Left: tagline paragraph text
+  - Right: 4 icon + label pairs in a row
+  - Icons: thin line SVG (nature-based, cruelty-free, eco-friendly, organic)
+  - All content fully dynamic via Theme Customizer
+  - Blocks system: merchant can add/remove/reorder icons
+
+  Install:
+  1. Save to sections/meuse-values-strip.liquid
+  2. shopify theme push --only sections/meuse-values-strip.liquid
+  3. Customizer → Add section → "Meuse Values Strip"
+  ============================================================
+{% endcomment %}
+
+{%- style -%}
+
+  /* ── Section wrapper ─────────────────────────────────── */
+  #mvs-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  /* ── Inner container ─────────────────────────────────── */
+  #mvs-{{ section.id }} .mvs__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 40px;
+  }
+
+  /* ── Left: tagline text ──────────────────────────────── */
+  #mvs-{{ section.id }} .mvs__tagline {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+    font-weight: 400;
+    line-height: 1.7;
+    color: {{ section.settings.text_color }};
+    letter-spacing: 0.01em;
+    margin: 0;
+    max-width: 420px;
+  }
+
+  /* ── Right: icons row ────────────────────────────────── */
+  #mvs-{{ section.id }} .mvs__icons {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: clamp(24px, 4vw, 56px);
+  }
+
+  /* ── Single icon item ────────────────────────────────── */
+  #mvs-{{ section.id }} .mvs__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+  }
+
+  /* Icon wrapper — fixed size so all icons align */
+  #mvs-{{ section.id }} .mvs__icon-wrap {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Uploaded image icons */
+  #mvs-{{ section.id }} .mvs__icon-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Built-in SVG icons */
+  #mvs-{{ section.id }} .mvs__icon-wrap svg {
+    width: 48px;
+    height: 48px;
+    stroke: {{ section.settings.icon_color }};
+    fill: none;
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Label text */
+  #mvs-{{ section.id }} .mvs__label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: {{ section.settings.text_color }};
+    text-transform: lowercase;
+    line-height: 1;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  /* ── Responsive ──────────────────────────────────────── */
+  @media screen and (max-width: 989px) {
+    #mvs-{{ section.id }} .mvs__inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    #mvs-{{ section.id }} .mvs__tagline {
+      max-width: 100%;
+    }
+
+    #mvs-{{ section.id }} .mvs__icons {
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 28px 40px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #mvs-{{ section.id }} .mvs__icons {
+      justify-content: center;
+    }
+
+    #mvs-{{ section.id }} .mvs__icon-wrap {
+      width: 44px;
+      height: 44px;
+    }
+
+    #mvs-{{ section.id }} .mvs__icon-wrap svg {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+{%- endstyle -%}
+
+{{- 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&display=swap' | stylesheet_tag -}}
+
+<div id="mvs-{{ section.id }}" class="meuse-values-strip">
+  <div class="mvs__inner">
+
+    <!-- LEFT: tagline -->
+    <p class="mvs__tagline">
+      {{- section.settings.tagline -}}
+    </p>
+
+    <!-- RIGHT: icon blocks -->
+    <div class="mvs__icons">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'icon_item' -%}
+            <div class="mvs__item" {{ block.shopify_attributes }}>
+
+              <div class="mvs__icon-wrap">
+                {%- if block.settings.icon_image != blank -%}
+                  {{-
+                    block.settings.icon_image
+                    | image_url: width: 120
+                    | image_tag:
+                      alt: block.settings.label,
+                      loading: 'lazy',
+                      width: 52,
+                      height: 52
+                  -}}
+                {%- else -%}
+                  {{- block.settings.icon_svg -}}
+                {%- endif -%}
+              </div>
+
+              <span class="mvs__label">
+                {{- block.settings.label -}}
+              </span>
+
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Meuse Values Strip",
+  "tag": "section",
+  "class": "meuse-values-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout & Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#f0ece3"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#2a2a2a"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon stroke color",
+      "default": "#2a2a2a",
+      "info": "Only applies to built-in SVG icons. Uploaded images use their own colors."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top (px)",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom (px)",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Left Side Text"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline text",
+      "default": "Crafted with a thoughtful focus on your mind, body, and surroundings, step into the world of Meuse."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon_item",
+      "name": "Icon",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon image",
+          "info": "Upload a PNG/SVG icon. If left empty, the SVG code below is used."
+        },
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Built-in SVG icon code",
+          "info": "Paste an SVG tag here if not uploading an image. Stroke color is controlled by the Icon color setting above.",
+          "default": "<svg viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M24 4C14 4 8 14 8 22c0 10 8 18 16 20 8-2 16-10 16-20 0-8-6-18-16-18z'/><path d='M24 44V24M24 24C20 18 14 14 10 16'/></svg>"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "nature-based"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Meuse Values Strip",
+      "category": "Brand",
+      "blocks": [
+        {
+          "type": "icon_item",
+          "settings": {
+            "label": "nature-based",
+            "icon_svg": "<svg viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg' stroke='currentColor' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'><path d='M24 42C24 42 8 30 8 18a16 16 0 0 1 32 0c0 12-16 24-16 24z'/><path d='M24 42V22'/><path d='M24 28c-4-4-10-6-14-4'/><path d='M24 22c4-4 10-5 13-3'/></svg>"
+          }
+        },
+        {
+          "type": "icon_item",
+          "settings": {
+            "label": "cruelty-free",
+            "icon_svg": "<svg viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg' stroke='currentColor' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'><circle cx='24' cy='24' r='18'/><path d='M18 20c0-2 1.5-4 4-4s4 2 4 2'/><path d='M26 20c0-2 1.5-3.5 3.5-3.5'/><ellipse cx='24' cy='28' rx='6' ry='4'/><path d='M20 24c0 0-2 1-2 3'/><path d='M28 24c0 0 2 1 2 3'/></svg>"
+          }
+        },
+        {
+          "type": "icon_item",
+          "settings": {
+            "label": "eco-friendly",
+            "icon_svg": "<svg viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg' stroke='currentColor' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'><circle cx='24' cy='24' r='18'/><path d='M24 14c-6 0-10 5-10 10s4 10 10 10 10-5 10-10'/><path d='M24 24c2-4 6-8 10-10'/><path d='M24 24v10'/></svg>"
+          }
+        },
+        {
+          "type": "icon_item",
+          "settings": {
+            "label": "organic",
+            "icon_svg": "<svg viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg' stroke='currentColor' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'><circle cx='24' cy='24' r='6'/><line x1='24' y1='6' x2='24' y2='12'/><line x1='24' y1='36' x2='24' y2='42'/><line x1='6' y1='24' x2='12' y2='24'/><line x1='36' y1='24' x2='42' y2='24'/><line x1='10.4' y1='10.4' x2='14.8' y2='14.8'/><line x1='33.2' y1='33.2' x2='37.6' y2='37.6'/><line x1='37.6' y1='10.4' x2='33.2' y2='14.8'/><line x1='14.8' y1='33.2' x2='10.4' y2='37.6'/></svg>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
