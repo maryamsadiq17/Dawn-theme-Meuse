@@ -9,8 +9,8 @@
  */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "meuse-hero-banner": {
+      "type": "meuse-hero-banner",
       "blocks": {
         "heading": {
           "type": "heading",
@@ -79,7 +79,7 @@
     }
   },
   "order": [
-    "image_banner",
+    "meuse-hero-banner",
     "featured_collection"
   ]
 }
