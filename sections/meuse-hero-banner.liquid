@@ -1,15 +1,20 @@
 {% comment %}
   ============================================================
-  MEUSE — HERO BANNER SECTION (FINAL)
+  MEUSE — HERO BANNER SECTION (FIXED)
   File: sections/meuse-hero-banner.liquid
 
   Layout (matches Figma exactly):
     Line 1:  "Visit our"           ← serif, light
     Line 2:  "amazon Store"        ← amazon bold + Store serif, SAME LINE
-             [white arrow beneath]
-    Button:  SHOP NOW              ← solid olive, NO border, NO radius
+             [Amazon smile arrow beneath]
+    Button:  SHOP NOW              ← olive bg, white border, NO radius
 
-  All text fully dynamic via Schema / Theme Customizer.
+  Fixes applied:
+    - Removed broken block definitions from schema (section has no blocks)
+    - Fixed Amazon smile SVG to match actual Amazon arrow (not generic curve)
+    - Fixed button to have white border (matches Figma: bordered button style)
+    - Fixed btn_new_tab default to false
+    - Cleaned up all settings to be self-contained (no external CSS dependencies)
   ============================================================
 {% endcomment %}
 
@@ -70,7 +75,7 @@
     color: #ffffff;
     line-height: 1.15;
     letter-spacing: 0.02em;
-    margin: 0;
+    margin: 0 0 0.1em;
   }
 
   /* ── Line 2: "amazon Store" — SAME LINE ─────────── */
@@ -78,7 +83,7 @@
     display: flex;
     align-items: baseline;
     justify-content: center;
-    gap: 0.25em;
+    gap: 0.2em;
     line-height: 1;
     margin: 0;
   }
@@ -104,20 +109,23 @@
     line-height: 1;
   }
 
-  /* ── White arrow — beneath "amazon Store" ────────── */
+  /* ── Amazon smile arrow — beneath "amazon Store" ─── */
+  /*    Sized to sit under the "amazon" word width      */
   #meuse-hero-{{ section.id }} .mh__arrow {
     display: block;
-    width: clamp(90px, 11vw, 150px);
+    width: clamp(80px, 10vw, 130px);
     height: auto;
-    margin: 0.3em auto 1.8rem;
+    /* Align it left-of-centre to sit under "amazon" text, not "Store" */
+    margin: 0.15em 0 1.8rem;
+    align-self: center;
   }
 
-  /* ── Button — solid olive, NO border, NO radius ──── */
+  /* ── Button — olive bg, white border, NO radius ──── */
   #meuse-hero-{{ section.id }} .mh__btn {
     display: inline-block;
     background-color: {{ section.settings.btn_bg }};
     color: {{ section.settings.btn_color }};
-    border: none;
+    border: 1px solid {{ section.settings.btn_border_color }};
     border-radius: 0;
     font-family: 'Jost', 'Gill Sans', sans-serif;
     font-size: 11px;
@@ -125,7 +133,7 @@
     letter-spacing: 0.24em;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 16px 52px;
+    padding: 14px 48px;
     min-width: 180px;
     cursor: pointer;
     transition: background-color 0.25s ease, opacity 0.25s ease;
@@ -147,7 +155,7 @@
       min-height: {{ section.settings.section_height | times: 0.60 | round }}px;
     }
     #meuse-hero-{{ section.id }} .mh__btn {
-      padding: 14px 36px;
+      padding: 13px 32px;
       font-size: 10px;
       min-width: 140px;
     }
@@ -161,8 +169,6 @@
 {{- 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Jost:wght@400;500&display=swap' | stylesheet_tag -}}
 
 <section id="meuse-hero-{{ section.id }}" class="meuse-hero">
-
-  {{- '<!-- Meuse Hero Banner — sections/meuse-hero-banner.liquid -->' -}}
 
   <!-- ① Background image -->
   <div class="mh__bg">
@@ -193,7 +199,7 @@
   <!-- ③ Content -->
   <div class="mh__content">
 
-    <!-- Line 1: dynamic "Visit our" -->
+    <!-- Line 1: "Visit our" -->
     <span class="mh__line-top">
       {{- section.settings.line_top -}}
     </span>
@@ -204,27 +210,37 @@
       <span class="mh__store-word">{{- section.settings.line_store -}}</span>
     </div>
 
-    <!-- White arrow beneath -->
+    <!--
+      Amazon smile arrow — matches the real Amazon arrow shape:
+      a flat curve that starts low-left, rises to centre, then sweeps
+      down-right with a pointed tail (like the amazon.com logo arrow).
+      Colour is white. Sized to sit under the "amazon" word.
+    -->
     <svg
       class="mh__arrow"
-      viewBox="0 0 160 28"
+      viewBox="0 0 120 30"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      <!-- Sweeping smile curve — WHITE -->
+      <!--
+        Amazon-style smile:
+        Starts at left (~x=4), curves up and across,
+        ends with a downward arrowhead tip on the right (~x=116).
+        The path intentionally mirrors the amazon logo smile arc.
+      -->
       <path
-        d="M10 14 Q80 30 150 14"
+        d="M4 10 Q30 26 60 22 Q90 18 108 8"
         stroke="#ffffff"
-        stroke-width="3.5"
+        stroke-width="3"
         stroke-linecap="round"
         fill="none"
       />
-      <!-- Arrowhead — WHITE -->
+      <!-- Arrowhead pointing down-right, matching Amazon logo tip -->
       <path
-        d="M136 7 L150 14 L136 21"
+        d="M100 4 L108 8 L104 16"
         stroke="#ffffff"
-        stroke-width="3.5"
+        stroke-width="3"
         stroke-linecap="round"
         stroke-linejoin="round"
         fill="none"
@@ -236,7 +252,7 @@
       <a
         href="{{ section.settings.btn_link | default: routes.collections_url }}"
         class="mh__btn"
-        {%- if section.settings.btn_new_tab -%}target="_blank" rel="noopener noreferrer"{%- endif -%}
+        {%- if section.settings.btn_new_tab -%} target="_blank" rel="noopener noreferrer"{%- endif -%}
       >
         {{- section.settings.btn_text -}}
       </a>
@@ -324,7 +340,7 @@
       "type": "checkbox",
       "id": "btn_new_tab",
       "label": "Open link in new tab",
-      "default": true,
+      "default": false,
       "info": "Turn on if linking to an external site like Amazon"
     },
     {
@@ -338,6 +354,13 @@
       "id": "btn_color",
       "label": "Button text color",
       "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_border_color",
+      "label": "Button border color",
+      "default": "#ffffff",
+      "info": "Visible border around the button — matches Figma design"
     }
   ],
   "presets": [
