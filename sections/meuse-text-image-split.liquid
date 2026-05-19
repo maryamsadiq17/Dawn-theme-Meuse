@@ -1,0 +1,338 @@
+{% comment %}
+  ============================================================
+  MEUSE — TEXT & IMAGE SPLIT SECTION
+  File: sections/meuse-text-image-split.liquid
+  Layout: Left Image, Right Text Block overlapping an asymmetrical background box.
+  ============================================================
+{% endcomment %}
+
+{%- style -%}
+  /* ── Section General Spacing ─────────────────────────── */
+  #mtis-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top_desktop }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    background-color: {{ section.settings.section_bg }};
+    overflow: hidden;
+  }
+
+  /* ── Inner Grid Container ────────────────────────────── */
+  #mtis-{{ section.id }} .mtis__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 4%;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    position: relative;
+  }
+
+  /* ── Left Side: Image Layout ────────────────────────── */
+  #mtis-{{ section.id }} .mtis__image-wrapper {
+    position: relative;
+    z-index: 2;
+    font-size: 0; /* Fixes stray inline spacing */
+  }
+
+  #mtis-{{ section.id }} .mtis__image-wrapper img,
+  #mtis-{{ section.id }} .mtis__image-wrapper .mtis__placeholder {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  #mtis-{{ section.id }} .mtis__placeholder {
+    background-color: #e2e2e2;
+    aspect-ratio: 4 / 3;
+  }
+
+  /* ── Right Side: Text & Background Block ──────────────── */
+  #mtis-{{ section.id }} .mtis__text-column {
+    position: relative;
+    padding: 10% 8% 10% 12%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Asymmetrical overlapping background block */
+  #mtis-{{ section.id }} .mtis__text-column::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -100vw; /* Extends gracefully past the right side screen viewport */
+    bottom: 0;
+    left: 0;
+    background-color: {{ section.settings.block_bg }};
+    z-index: 1;
+  }
+
+  #mtis-{{ section.id }} .mtis__content {
+    position: relative;
+    z-index: 2;
+    max-width: 460px;
+  }
+
+  /* ── Typography Settings ────────────────────────────── */
+  #mtis-{{ section.id }} .mtis__heading {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: {{ section.settings.heading_color }};
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 24px 0;
+  }
+
+  #mtis-{{ section.id }} .mtis__text {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: {{ section.settings.text_size }}px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: {{ section.settings.text_color }};
+    letter-spacing: 0.01em;
+    margin: 0;
+  }
+
+  #mtis-{{ section.id }} .mtis__text p {
+    margin: 0 0 16px 0;
+  }
+  #mtis-{{ section.id }} .mtis__text p:last-child {
+    margin: 0;
+  }
+
+  /* Decorative wavy topography lines matching design background */
+  #mtis-{{ section.id }} .mtis__bg-lines {
+    position: absolute;
+    top: -40px;
+    right: -20px;
+    width: 240px;
+    opacity: 0.25;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* ── Responsive Viewports (Tablet & Mobile Breakdown) ── */
+  @media screen and (max-width: 989px) {
+    #mtis-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+
+    #mtis-{{ section.id }} .mtis__inner {
+      grid-template-columns: 1fr;
+    }
+
+    #mtis-{{ section.id }} .mtis__text-column {
+      padding: 48px 32px;
+      margin-top: -20px; /* Slight stack overlap on mobile devices */
+    }
+
+    #mtis-{{ section.id }} .mtis__text-column::before {
+      left: -100vw; /* Extends to full width background strip on mobile view */
+    }
+
+    #mtis-{{ section.id }} .mtis__content {
+      max-width: 100%;
+    }
+
+    #mtis-{{ section.id }} .mtis__heading {
+      font-size: {{ section.settings.heading_size_mobile }}px;
+      margin-bottom: 16px;
+    }
+
+    #mtis-{{ section.id }} .mtis__text {
+      font-size: {{ section.settings.text_size_mobile }}px;
+    }
+  }
+{%- endstyle -%}
+
+{{- 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&display=swap' | stylesheet_tag -}}
+
+<div id="mtis-{{ section.id }}" class="meuse-text-image-split">
+  <div class="mvs__inner mtis__inner">
+    
+    <div class="mtis__image-wrapper">
+      {%- if section.settings.image != blank -%}
+        {%- capture sizes -%}(min-width: 990px) 55vw, 100vw{%- endcapture -%}
+        {{ section.settings.image | image_url: width: 1400 | image_tag:
+          loading: 'lazy',
+          sizes: sizes,
+          widths: '400, 600, 800, 1000, 1200, 1400',
+          alt: section.settings.heading
+        }}
+      {%- else -%}
+        <div class="mtis__placeholder">{{ 'image' | placeholder_svg_tag }}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="mtis__text-column">
+      
+      <svg class="mtis__bg-lines" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10,0 C30,40 70,20 100,50 M0,20 C40,50 60,10 100,70 M0,50 C50,80 50,30 100,90" stroke="{{ section.settings.text_color }}" stroke-width="0.5"/>
+      </svg>
+
+      <div class="mtis__content">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="mtis__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.text != blank -%}
+          <div class="mtis__text">
+            {{ section.settings.text }}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Meuse Text-Image Split",
+  "tag": "section",
+  "class": "meuse-split-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media Content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Section Image"
+    },
+    {
+      "type": "header",
+      "content": "Section Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Outer Canvas background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "block_bg",
+      "label": "Text block background box",
+      "default": "#d2d7cb"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading text color",
+      "default": "#2a2a2a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body text color",
+      "default": "#2a2a2a"
+    },
+    {
+      "type": "header",
+      "content": "Typography Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading text",
+      "default": "Simple, natural solutions that work."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Body paragraph text",
+      "default": "<p>At Meuse, we believe that nature has the power to soothe and calm the mind. That is why we focus on creating 100% natural products that are designed to fit seamlessly into your daily routines, and infuse them with moments of purposeful care.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Sizing"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Font Size (px)",
+      "min": 18,
+      "max": 48,
+      "step": 1,
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Body Font Size (px)",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Padding Top (px)",
+      "min": 0,
+      "max": 140,
+      "step": 5,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Padding Bottom (px)",
+      "min": 0,
+      "max": 140,
+      "step": 5,
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Mobile Sizing"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading Mobile Font Size (px)",
+      "min": 16,
+      "max": 36,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "text_size_mobile",
+      "label": "Body Mobile Font Size (px)",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Mobile Padding Top (px)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Mobile Padding Bottom (px)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 30
+    }
+  ],
+  "presets": [
+    {
+      "name": "Meuse Text-Image Split"
+    }
+  ]
+}
+{% endschema %}
