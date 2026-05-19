@@ -2,24 +2,10 @@
   ============================================================
   MEUSE — VALUES STRIP SECTION
   File: sections/meuse-values-strip.liquid
-
-  Layout (matches Values.png Figma exactly):
-  - Warm off-white background (#f0ece3)
-  - Left: tagline paragraph text
-  - Right: 4 icon + label pairs in a row
-  - Icons: thin line SVG (nature-based, cruelty-free, eco-friendly, organic)
-  - All content fully dynamic via Theme Customizer
-  - Blocks system: merchant can add/remove/reorder icons
-
-  Install:
-  1. Save to sections/meuse-values-strip.liquid
-  2. shopify theme push --only sections/meuse-values-strip.liquid
-  3. Customizer → Add section → "Meuse Values Strip"
   ============================================================
 {% endcomment %}
 
 {%- style -%}
-
   /* ── Section wrapper ─────────────────────────────────── */
   #mvs-{{ section.id }} {
     background-color: {{ section.settings.bg_color }};
@@ -42,7 +28,7 @@
   /* ── Left: tagline text ──────────────────────────────── */
   #mvs-{{ section.id }} .mvs__tagline {
     font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+    font-size: {{ section.settings.tagline_font_size }}px;
     font-weight: 400;
     line-height: 1.7;
     color: {{ section.settings.text_color }};
@@ -100,12 +86,12 @@
   /* Label text */
   #mvs-{{ section.id }} .mvs__label {
     font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 0.78rem;
+    font-size: {{ section.settings.label_font_size }}px;
     font-weight: 400;
     letter-spacing: 0.04em;
     color: {{ section.settings.text_color }};
     text-transform: lowercase;
-    line-height: 1;
+    line-height: 1.2;
     margin: 0;
     white-space: nowrap;
   }
@@ -119,6 +105,7 @@
 
     #mvs-{{ section.id }} .mvs__tagline {
       max-width: 100%;
+      font-size: {{ section.settings.tagline_font_size_mobile }}px;
     }
 
     #mvs-{{ section.id }} .mvs__icons {
@@ -142,8 +129,11 @@
       width: 40px;
       height: 40px;
     }
+    
+    #mvs-{{ section.id }} .mvs__label {
+      font-size: {{ section.settings.label_font_size_mobile }}px;
+    }
   }
-
 {%- endstyle -%}
 
 {{- 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&display=swap' | stylesheet_tag -}}
@@ -151,12 +141,10 @@
 <div id="mvs-{{ section.id }}" class="meuse-values-strip">
   <div class="mvs__inner">
 
-    <!-- LEFT: tagline -->
-    <p class="mvs__tagline">
+    <div class="mvs__tagline">
       {{- section.settings.tagline -}}
-    </p>
+    </div>
 
-    <!-- RIGHT: icon blocks -->
     <div class="mvs__icons">
       {%- for block in section.blocks -%}
         {%- case block.type -%}
@@ -240,13 +228,53 @@
     },
     {
       "type": "header",
-      "content": "Left Side Text"
+      "content": "Tagline Typography"
     },
     {
-      "type": "textarea",
+      "type": "richtext",
       "id": "tagline",
       "label": "Tagline text",
-      "default": "Crafted with a thoughtful focus on your mind, body, and surroundings, step into the world of Meuse."
+      "default": "<p>Crafted with a thoughtful focus on your mind, body, and surroundings, step into the world of Meuse.</p>"
+    },
+    {
+      "type": "range",
+      "id": "tagline_font_size",
+      "label": "Desktop Tagline Size (px)",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "tagline_font_size_mobile",
+      "label": "Mobile Tagline Size (px)",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Block Label Typography"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "label": "Desktop Label Size (px)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "label_font_size_mobile",
+      "label": "Mobile Label Size (px)",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 11
     }
   ],
   "blocks": [
