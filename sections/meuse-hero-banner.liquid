@@ -167,6 +167,8 @@
 {%- endstyle -%}
 
 {{- 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Jost:wght@400;500&display=swap' | stylesheet_tag -}}
+{{- 'meuse-hero.css' | asset_url | stylesheet_tag -}}
+<script defer src="{{ 'meuse-hero.js' | asset_url }}"></script>
 
 <section id="meuse-hero-{{ section.id }}" class="meuse-hero">
 
@@ -265,7 +267,6 @@
 {% schema %}
 {
   "name": "Meuse Hero Banner",
-  "tag": "div",
   "class": "meuse-hero-section",
   "settings": [
     {
@@ -363,6 +364,7 @@
       "info": "Visible border around the button — matches Figma design"
     }
   ],
+  "blocks": [],
   "presets": [
     {
       "name": "Meuse Hero Banner",
