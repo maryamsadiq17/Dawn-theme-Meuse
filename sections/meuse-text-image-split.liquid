@@ -1,249 +1,312 @@
 {% comment %}
   ============================================================
-  MEUSE — ASYMMETRICAL TEXT & IMAGE SPLIT (THEME BREAKOUT)
+  MEUSE — TEXT & IMAGE SPLIT — PIXEL-PERFECT FIGMA MATCH
   File: sections/meuse-text-image-split.liquid
+  
+  LAYOUT LOGIC (matches Figma exactly):
+  - Full-width section with dark/black background
+  - Green/sage panel: inset from top, flush right & bottom
+  - Photo: inset from top AND bottom, flush left, overlaps green panel
+  - Concentric arcs: top-right corner of section (over dark bg), bottom-left corner of section
   ============================================================
 {% endcomment %}
 
 {%- style -%}
-  /* ── Ultra-High Specificity Breakout ─────────────────── */
-  /* This completely overrides Dawn theme max-width restrictions */
-  div.shopify-section.meuse-split-section,
-  .shopify-section.meuse-split-section,
+
   #shopify-section-{{ section.id }} {
-    width: 100vw !important;
-    max-width: 100vw !important;
-    min-width: 100vw !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: calc(-50vw + 50%) !important;
-    margin-right: calc(-50vw + 50%) !important;
-    position: relative;
-    left: 0 !important;
-    right: 0 !important;
-    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
-  /* ── Root Container Framework ────────────────────────── */
+  /* ── Root: full-width, fixed height, dark background ── */
   #mtis-{{ section.id }} {
     position: relative;
-    width: 100vw !important;
-    max-width: 100vw !important;
+    width: 100%;
     height: {{ section.settings.section_height_desktop }}px;
     background-color: {{ section.settings.section_bg }};
     overflow: hidden;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
+    display: block;
+    box-sizing: border-box;
   }
 
-  /* ── Asymmetrical Grid Layout ────────────────────────── */
-  /* Left column (Image): 42vw | Right column (Text): 58vw */
-  #mtis-{{ section.id }} .mtis__grid {
-    display: grid !important;
-    grid-template-columns: 42vw 58vw !important; 
-    width: 100vw !important;
-    max-width: 100vw !important;
-    height: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    position: relative;
-    z-index: 2;
-  }
-
-  /* ── Left Side Frame (Flush Left Wall) ───────────────── */
-  #mtis-{{ section.id }} .mtis__image-column {
-    width: 100% !important;
-    height: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  #mtis-{{ section.id }} .mtis__image-column img,
-  #mtis-{{ section.id }} .mtis__image-column .mtis__placeholder {
-    width: 100% !important;
-    height: 100% !important;
-    display: block !important;
-    object-fit: cover !important;
-  }
-
-  #mtis-{{ section.id }} .mtis__placeholder {
-    background-color: #e2e2e2;
-  }
-
-  /* ── Right Side Frame (Flush Right Wall) ─────────────── */
-  #mtis-{{ section.id }} .mtis__text-column {
-    background-color: {{ section.settings.block_bg }} !important;
-    height: 100% !important;
-    display: flex !important;
-    align-items: flex-start !important; /* Forces text content straight to the top */
-    justify-content: flex-start !important;
-    padding: 120px 8% 60px 10% !important; /* Top elevation push */
-    box-sizing: border-box !important;
-  }
-
-  #mtis-{{ section.id }} .mtis__content {
-    max-width: 620px !important; /* Wide baseline matches Figma alignment exactly */
-    width: 100% !important;
-  }
-
-  /* ── Typography Styling ──────────────────────────────── */
-  #mtis-{{ section.id }} .mtis__heading {
-    font-family: 'Cormorant Garamond', Georgia, serif !important;
-    font-size: {{ section.settings.heading_size }}px !important;
-    font-weight: 400 !important;
-    line-height: 1.25 !important;
-    color: {{ section.settings.heading_color }} !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
-    margin: 0 0 36px 0 !important;
-  }
-
-  #mtis-{{ section.id }} .mtis__text {
-    font-family: 'Cormorant Garamond', Georgia, serif !important;
-    font-size: {{ section.settings.text_size }}px !important;
-    font-weight: 400 !important;
-    line-height: 1.8 !important;
-    color: {{ section.settings.text_color }} !important;
-    letter-spacing: 0.02em !important;
-    margin: 0 !important;
-  }
-
-  #mtis-{{ section.id }} .mtis__text p {
-    margin: 0 0 22px 0 !important;
-  }
-  #mtis-{{ section.id }} .mtis__text p:last-child {
-    margin: 0 !important;
-  }
-
-  /* ── Absolute Background Vector Layers ───────────────── */
-  #mtis-{{ section.id }} .mtis__vector-layer {
+  /* ── GREEN TEXT PANEL — inset from top, flush right + bottom ── */
+  #mtis-{{ section.id }} .mtis__panel {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: {{ section.settings.panel_top_offset }}px;
+    right: 0;
+    width: {{ section.settings.panel_width_percent }}%;
+    bottom: 0;
+    background-color: {{ section.settings.block_bg }};
+    overflow: hidden;
     z-index: 1;
-    pointer-events: none;
   }
 
-  #mtis-{{ section.id }} .mtis__vector {
+  /* ── Concentric arc — top-right of the SECTION (dark area) ── */
+  #mtis-{{ section.id }} .mtis__arc--tr {
     position: absolute;
+    top: -10px;
+    right: -10px;
+    width: {{ section.settings.arc_size }}px;
+    height: {{ section.settings.arc_size }}px;
+    pointer-events: none;
+    z-index: 5;
     opacity: {{ section.settings.vector_opacity | divided_by: 100.0 }};
   }
 
-  #mtis-{{ section.id }} .mtis__vector--top-right {
-    top: 0;
-    right: 0;
-    width: 32vw;
-    max-width: 480px;
-  }
-
-  #mtis-{{ section.id }} .mtis__vector--bottom-left {
-    bottom: 0;
-    left: 0;
-    width: 25vw;
-    max-width: 380px;
-  }
-
-  #mtis-{{ section.id }} .mtis__vector svg {
+  #mtis-{{ section.id }} .mtis__arc--tr svg {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
   }
 
-  /* ── Mobile & Tablet Layout Adaptability ─────────────── */
+  /* ── Text content sits above decorations ── */
+  #mtis-{{ section.id }} .mtis__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: {{ section.settings.text_padding_top }}px {{ section.settings.text_padding_right }}px {{ section.settings.text_padding_bottom }}px {{ section.settings.text_padding_left }}px;
+    box-sizing: border-box;
+  }
+
+  /* ── Heading ── */
+  #mtis-{{ section.id }} .mtis__heading {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: {{ section.settings.heading_color }};
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 {{ section.settings.heading_margin_bottom }}px 0;
+    padding: 0;
+  }
+
+  /* ── Body Text ── */
+  #mtis-{{ section.id }} .mtis__text {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: {{ section.settings.text_size }}px;
+    font-weight: 400;
+    line-height: 1.85;
+    color: {{ section.settings.text_color }};
+    letter-spacing: 0.025em;
+    margin: 0;
+  }
+
+  #mtis-{{ section.id }} .mtis__text p {
+    margin: 0 0 20px 0;
+  }
+
+  #mtis-{{ section.id }} .mtis__text p:last-child {
+    margin: 0;
+  }
+
+  /* ── PHOTO BLOCK — inset top + bottom, flush left, overlaps panel ── */
+  #mtis-{{ section.id }} .mtis__image-wrap {
+    position: absolute;
+    top: {{ section.settings.image_top_offset }}px;
+    left: 0;
+    width: {{ section.settings.image_width_percent }}%;
+    bottom: {{ section.settings.image_bottom_offset }}px;
+    z-index: 3;
+    overflow: hidden;
+  }
+
+  #mtis-{{ section.id }} .mtis__image-wrap img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    margin-top: 40px;
+    object-position: {{ section.settings.image_focal_point }};
+  }
+
+  #mtis-{{ section.id }} .mtis__placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #c8c8c8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Bottom-left arc — sits in dark area (below and left of image) ── */
+  #mtis-{{ section.id }} .mtis__arc--bl {
+    position: absolute;
+    bottom: -10px;
+    left: -10px;
+    width: {{ section.settings.arc_size }}px;
+    height: {{ section.settings.arc_size }}px;
+    pointer-events: none;
+    z-index: 4;
+    opacity: {{ section.settings.vector_opacity | divided_by: 100.0 }};
+  }
+
+  #mtis-{{ section.id }} .mtis__arc--bl svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* ── Optional CTA Button ── */
+  {%- if section.settings.button_label != blank -%}
+  #mtis-{{ section.id }} .mtis__cta {
+    display: inline-block;
+    margin-top: 36px;
+    padding: 13px 34px;
+    background-color: {{ section.settings.button_bg }};
+    color: {{ section.settings.button_color }};
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid {{ section.settings.button_border }};
+    transition: background-color 0.25s ease, color 0.25s ease;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+  #mtis-{{ section.id }} .mtis__cta:hover {
+    background-color: {{ section.settings.button_hover_bg }};
+    color: {{ section.settings.button_hover_color }};
+  }
+  {%- endif -%}
+
+  /* ── TABLET (768–989px) ── */
   @media screen and (max-width: 989px) {
-    div.shopify-section.meuse-split-section,
-    .shopify-section.meuse-split-section,
     #shopify-section-{{ section.id }} {
-      margin-left: 0 !important;
-      margin-right: 0 !important;
       width: 100% !important;
-      max-width: 100% !important;
+      margin: 0 !important;
     }
-
     #mtis-{{ section.id }} {
-      height: auto !important;
-      width: 100% !important;
+      height: auto;
+      min-height: 0;
     }
-
-    #mtis-{{ section.id }} .mtis__grid {
-      grid-template-columns: 1fr !important;
-      width: 100% !important;
-      height: auto !important;
+    #mtis-{{ section.id }} .mtis__panel {
+      position: relative;
+      top: auto;
+      right: auto;
+      width: 100%;
+      bottom: auto;
     }
-
-    #mtis-{{ section.id }} .mtis__image-column {
-      height: 480px !important;
+    #mtis-{{ section.id }} .mtis__image-wrap {
+      position: relative;
+      top: auto;
+      left: auto;
+      width: 100%;
+      height: {{ section.settings.mobile_image_height }}px;
+      bottom: auto;
     }
-
-    #mtis-{{ section.id }} .mtis__text-column {
-      padding: 60px 24px !important;
-      align-items: center !important;
+    #mtis-{{ section.id }} .mtis__content {
+      padding: 52px 28px 56px 28px;
+      align-items: center;
+      text-align: center;
     }
-
     #mtis-{{ section.id }} .mtis__heading {
-      font-size: {{ section.settings.heading_size_mobile }}px !important;
-      margin-bottom: 24px !important;
-      text-align: center !important;
+      font-size: {{ section.settings.heading_size_mobile }}px;
+      margin-bottom: 20px;
     }
-
     #mtis-{{ section.id }} .mtis__text {
-      font-size: {{ section.settings.text_size_mobile }}px !important;
+      font-size: {{ section.settings.text_size_mobile }}px;
+    }
+    #mtis-{{ section.id }} .mtis__cta {
+      align-self: center;
+    }
+    #mtis-{{ section.id }} .mtis__arc--tr,
+    #mtis-{{ section.id }} .mtis__arc--bl {
+      display: none;
     }
   }
+
+  /* ── MOBILE (≤480px) ── */
+  @media screen and (max-width: 480px) {
+    #mtis-{{ section.id }} .mtis__image-wrap {
+      height: 300px;
+    }
+    #mtis-{{ section.id }} .mtis__content {
+      padding: 40px 20px 48px 20px;
+    }
+    #mtis-{{ section.id }} .mtis__heading {
+      font-size: {{ section.settings.heading_size_mobile | minus: 2 }}px;
+    }
+  }
+
 {%- endstyle -%}
 
-{{- 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&display=swap' | stylesheet_tag -}}
+{{ 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap' | stylesheet_tag }}
 
 <div id="mtis-{{ section.id }}" class="meuse-text-image-split">
-  
-  <div class="mtis__vector-layer">
-    <div class="mtis__vector mtis__vector--top-right">
-      <svg viewBox="0 0 357 282" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M72.5 0C110.5 83.5 240.5 45.5 357 101M0 45C86.5 111.5 158.5 20.5 357 149M0 115C118.5 186.5 143.5 69.5 357 197.5M0 191.5C149.5 261 179.5 119.5 357 241M41 281.5C193.5 329.5 233.5 178 357 281.5" stroke="{{ section.settings.vector_color }}" stroke-width="0.7"/>
-      </svg>
-    </div>
 
-    <div class="mtis__vector mtis__vector--bottom-left">
-      <svg viewBox="0 0 294 227" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 0C46.5 36.5 83 91.5 59.5 137.5C36 183.5 -17.5 192.5 0 227M0 49C78.5 85.5 125.5 127 109 167C92.5 207 41.5 208.5 54 227M0 102C106 136.5 162.5 160 152 192C141.5 224 99.5 219.5 108.5 227M0 151.5C124 179.5 190.5 191 189 211C187.5 231 154.5 224.5 160.5 227M0 199.5C136 218 214 221.5 217.5 225C221 228.5 199.5 226.5 204.5 227" stroke="{{ section.settings.vector_color }}" stroke-width="0.7"/>
-      </svg>
-    </div>
-  </div>
+  <!-- ── GREEN TEXT PANEL (behind image on desktop) ── -->
+  <div class="mtis__panel">
+    <div class="mtis__content">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="mtis__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
 
-  <div class="mtis__grid">
-    
-    <div class="mtis__image-column">
-      {%- if section.settings.image != blank -%}
-        {%- capture sizes -%}42vw{%- endcapture -%}
-        {{ section.settings.image | image_url: width: 1800 | image_tag:
-          loading: 'lazy',
-          sizes: sizes,
-          widths: '600, 800, 1000, 1200, 1400, 1600, 1800',
-          alt: section.settings.heading
-        }}
-      {%- else -%}
-        <div class="mtis__placeholder">{{ 'image' | placeholder_svg_tag }}</div>
+      {%- if section.settings.text != blank -%}
+        <div class="mtis__text">{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <a
+          href="{{ section.settings.button_link | default: '#' }}"
+          class="mtis__cta"
+          {% if section.settings.button_link == blank %}aria-disabled="true"{% endif %}
+        >{{ section.settings.button_label }}</a>
       {%- endif -%}
     </div>
-
-    <div class="mtis__text-column">
-      <div class="mtis__content">
-        {%- if section.settings.heading != blank -%}
-          <h2 class="mtis__heading">{{ section.settings.heading }}</h2>
-        {%- endif -%}
-
-        {%- if section.settings.text != blank -%}
-          <div class="mtis__text">
-            {{ section.settings.text }}
-          </div>
-        {%- endif -%}
-      </div>
-    </div>
-
   </div>
+
+  <!-- ── PHOTO (floats over panel on desktop) ── -->
+  <div class="mtis__image-wrap">
+    {%- if section.settings.image != blank -%}
+      {%- capture mtis_sizes -%}(max-width: 989px) 100vw, {{ section.settings.image_width_percent }}vw{%- endcapture -%}
+      {{
+        section.settings.image
+        | image_url: width: 1800
+        | image_tag:
+          loading: 'lazy',
+          sizes: mtis_sizes,
+          widths: '400, 600, 800, 1000, 1200, 1400, 1600, 1800',
+          alt: section.settings.heading
+      }}
+    {%- else -%}
+      <div class="mtis__placeholder">{{ 'image' | placeholder_svg_tag }}</div>
+    {%- endif -%}
+  </div>
+
+  <!-- ── TOP-RIGHT ARC DECORATION (over dark section bg) ── -->
+  {%- if section.settings.show_vectors -%}
+    <div class="mtis__arc--tr">
+      <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="300" cy="0" r="80"  stroke="{{ section.settings.vector_color }}" stroke-width="0.8"/>
+        <circle cx="300" cy="0" r="120" stroke="{{ section.settings.vector_color }}" stroke-width="0.8"/>
+        <circle cx="300" cy="0" r="160" stroke="{{ section.settings.vector_color }}" stroke-width="0.8"/>
+        <circle cx="300" cy="0" r="200" stroke="{{ section.settings.vector_color }}" stroke-width="0.8"/>
+        <circle cx="300" cy="0" r="240" stroke="{{ section.settings.vector_color }}" stroke-width="0.8"/>
+      </svg>
+    </div>
+  {%- endif -%}
+
+  <!-- ── BOTTOM-LEFT ARC DECORATION ── -->
+  {%- if section.settings.show_vectors -%}
+    <div class="mtis__arc--bl">
+      <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="0" cy="300" r="80"  stroke="{{ section.settings.vector_color }}" stroke-width="0.8"/>
+        <circle cx="0" cy="300" r="120" stroke="{{ section.settings.vector_color }}" stroke-width="0.8"/>
+        <circle cx="0" cy="300" r="160" stroke="{{ section.settings.vector_color }}" stroke-width="0.8"/>
+        <circle cx="0" cy="300" r="200" stroke="{{ section.settings.vector_color }}" stroke-width="0.8"/>
+        <circle cx="0" cy="300" r="240" stroke="{{ section.settings.vector_color }}" stroke-width="0.8"/>
+      </svg>
+    </div>
+  {%- endif -%}
+
 </div>
 
 {% schema %}
@@ -254,116 +317,313 @@
   "settings": [
     {
       "type": "header",
-      "content": "Media Content Asset"
+      "content": "📸 Image"
     },
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Section Image Source"
+      "label": "Section Image"
+    },
+    {
+      "type": "text",
+      "id": "image_focal_point",
+      "label": "Image Focal Point (object-position)",
+      "default": "center center",
+      "info": "e.g. 'center center', 'top center', '60% 50%'"
     },
     {
       "type": "header",
-      "content": "Section Sizing Setup"
+      "content": "📐 Section Height"
     },
     {
       "type": "range",
       "id": "section_height_desktop",
       "label": "Desktop Height (px)",
-      "min": 600,
+      "min": 400,
       "max": 1100,
-      "step": 4,
-      "default": 952
+      "step": 10,
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "label": "Mobile Image Height (px)",
+      "min": 200,
+      "max": 600,
+      "step": 10,
+      "default": 420
+    },
+    {
+      "type": "header",
+      "content": "🖼 Image Block Position (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "image_width_percent",
+      "label": "Image Width (% of section)",
+      "min": 25,
+      "max": 60,
+      "step": 1,
+      "default": 46,
+      "info": "How wide the photo block is relative to the full section width."
+    },
+    {
+      "type": "range",
+      "id": "image_top_offset",
+      "label": "Image Top Offset (px)",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "default": 40,
+      "info": "Dark strip above the image. Matches the dark band visible in Figma."
+    },
+    {
+      "type": "range",
+      "id": "image_bottom_offset",
+      "label": "Image Bottom Offset (px)",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "default": 40,
+      "info": "Dark strip below the image."
+    },
+    {
+      "type": "header",
+      "content": "🟩 Green Panel Position (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "panel_width_percent",
+      "label": "Panel Width (% of section)",
+      "min": 40,
+      "max": 80,
+      "step": 1,
+      "default": 62,
+      "info": "How wide the green text panel is. Always flush to the right edge."
+    },
+    {
+      "type": "range",
+      "id": "panel_top_offset",
+      "label": "Panel Top Offset (px)",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "default": 40,
+      "info": "Dark strip above the green panel. Should match Image Top Offset."
+    },
+    {
+      "type": "header",
+      "content": "🎨 Colors"
     },
     {
       "type": "color",
       "id": "section_bg",
-      "label": "Section Background Canvas",
-      "default": "#ffffff"
+      "label": "Section Background",
+      "default": "#1a1a18",
+      "info": "The dark background visible at top, bottom-left, and behind the panel top."
     },
     {
       "type": "color",
       "id": "block_bg",
-      "label": "Text Block Background Color",
-      "default": "#d2d7cb"
+      "label": "Text Panel Background",
+      "default": "#c8cdc3"
     },
     {
       "type": "header",
-      "content": "Vector Artwork Properties"
+      "content": "✦ Decorative Arc Vectors"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vectors",
+      "label": "Show Decorative Arcs",
+      "default": true
     },
     {
       "type": "color",
       "id": "vector_color",
-      "label": "Vector Path Stroke Color",
-      "default": "#2a2a2a"
+      "label": "Arc Stroke Color",
+      "default": "#8a9082"
     },
     {
       "type": "range",
       "id": "vector_opacity",
-      "label": "Vector Line Opacity (%)",
+      "label": "Arc Opacity (%)",
       "min": 5,
       "max": 100,
       "step": 5,
-      "default": 35
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "arc_size",
+      "label": "Arc Size (px)",
+      "min": 150,
+      "max": 500,
+      "step": 10,
+      "default": 300
     },
     {
       "type": "header",
-      "content": "Typography Copy Elements"
+      "content": "📝 Heading"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading Content String",
+      "label": "Heading Text",
       "default": "Simple, natural solutions that work."
     },
     {
-      "type": "richtext",
-      "id": "text",
-      "label": "Body Copy Paragraph Text",
-      "default": "<p>At Meuse, we believe that nature has the power to soothe and calm the mind. That is why we focus on creating 100% natural products that are designed to fit seamlessly into your daily routines, and infuse them with moments of purposeful care.</p>"
-    },
-    {
-      "type": "header",
-      "content": "Desktop Text Configurations"
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#2a2a25"
     },
     {
       "type": "range",
       "id": "heading_size",
-      "label": "Heading Font Size (px)",
-      "min": 20,
-      "max": 60,
+      "label": "Heading Size — Desktop (px)",
+      "min": 16,
+      "max": 64,
       "step": 1,
-      "default": 34
-    },
-    {
-      "type": "range",
-      "id": "text_size",
-      "label": "Body Font Size (px)",
-      "min": 14,
-      "max": 28,
-      "step": 1,
-      "default": 18
-    },
-    {
-      "type": "header",
-      "content": "Mobile Text Configurations"
+      "default": 26
     },
     {
       "type": "range",
       "id": "heading_size_mobile",
-      "label": "Heading Mobile Font Size (px)",
+      "label": "Heading Size — Mobile (px)",
       "min": 16,
       "max": 40,
       "step": 1,
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_bottom",
+      "label": "Space Below Heading (px)",
+      "min": 8,
+      "max": 80,
+      "step": 2,
       "default": 24
+    },
+    {
+      "type": "header",
+      "content": "📄 Body Text"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Body Text",
+      "default": "<p>At Meuse, we believe that nature has the power to soothe and calm the mind. That is why we focus on creating 100% natural products that are designed to fit seamlessly into your daily routines, and infuse them with moments of purposeful care.</p>"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body Text Color",
+      "default": "#3a3a30"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Body Size — Desktop (px)",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16
     },
     {
       "type": "range",
       "id": "text_size_mobile",
-      "label": "Body Mobile Font Size (px)",
+      "label": "Body Size — Mobile (px)",
       "min": 12,
       "max": 22,
       "step": 1,
-      "default": 16
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "📦 Text Panel Padding (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "text_padding_top",
+      "label": "Padding Top (px)",
+      "min": 20,
+      "max": 200,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "text_padding_bottom",
+      "label": "Padding Bottom (px)",
+      "min": 20,
+      "max": 200,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "text_padding_left",
+      "label": "Padding Left (px) — pushes text clear of the photo",
+      "min": 20,
+      "max": 300,
+      "step": 4,
+      "default": 160,
+      "info": "Set this high enough so text doesn't hide behind the photo. Rule of thumb: (image_width% - panel_width% + some gap) expressed in px at your typical viewport."
+    },
+    {
+      "type": "range",
+      "id": "text_padding_right",
+      "label": "Padding Right (px)",
+      "min": 20,
+      "max": 200,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "🔘 Optional CTA Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "info": "Leave blank to hide the button."
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Button Background",
+      "default": "#2a2a25"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_border",
+      "label": "Button Border Color",
+      "default": "#2a2a25"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg",
+      "label": "Button Hover Background",
+      "default": "#c8cdc3"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button Hover Text Color",
+      "default": "#2a2a25"
     }
   ],
   "presets": [
