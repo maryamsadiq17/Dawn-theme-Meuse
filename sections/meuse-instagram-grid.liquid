@@ -1,0 +1,474 @@
+{% comment %}
+  ============================================================
+  MEUSE — INSTAGRAM 4-PANEL GRID
+  File: sections/meuse-instagram-grid.liquid
+
+  LAYOUT:
+  - 4 equal-width images side by side, full section height
+  - Panel 2 (from left) has an optional text overlay
+  - All 4 panels are fully configurable via schema
+  ============================================================
+{% endcomment %}
+
+{%- style -%}
+
+  #shopify-section-{{ section.id }} {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #mig-{{ section.id }} {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    height: {{ section.settings.section_height }}px;
+    overflow: hidden;
+  }
+
+  /* ── Each panel ── */
+  #mig-{{ section.id }} .mig__panel {
+    position: relative;
+    overflow: hidden;
+  }
+
+  #mig-{{ section.id }} .mig__panel img,
+  #mig-{{ section.id }} .mig__panel .mig__placeholder {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center center;
+    transition: transform 0.6s ease;
+  }
+
+  #mig-{{ section.id }} .mig__panel:hover img {
+    transform: scale(1.04);
+  }
+
+  #mig-{{ section.id }} .mig__placeholder {
+    background-color: #c8cdc3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Overlay on panel 2 ── */
+  #mig-{{ section.id }} .mig__panel--has-overlay .mig__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  #mig-{{ section.id }} .mig__panel--has-overlay .mig__overlay-content {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: {{ section.settings.overlay_valign }};
+    align-items: {{ section.settings.overlay_halign }};
+    padding: {{ section.settings.overlay_padding_v }}px {{ section.settings.overlay_padding_h }}px;
+    text-align: {{ section.settings.overlay_text_align }};
+    box-sizing: border-box;
+  }
+
+  #mig-{{ section.id }} .mig__overlay-eyebrow {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: {{ section.settings.eyebrow_size }}px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: {{ section.settings.overlay_text_color }};
+    margin: 0 0 14px 0;
+    opacity: 0.85;
+  }
+
+  #mig-{{ section.id }} .mig__overlay-heading {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: {{ section.settings.overlay_heading_size }}px;
+    font-weight: 400;
+    line-height: 1.25;
+    color: {{ section.settings.overlay_text_color }};
+    letter-spacing: 0.01em;
+    margin: 0 0 20px 0;
+  }
+
+  #mig-{{ section.id }} .mig__overlay-text {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: {{ section.settings.overlay_text_size }}px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: {{ section.settings.overlay_text_color }};
+    letter-spacing: 0.02em;
+    margin: 0 0 24px 0;
+  }
+
+  #mig-{{ section.id }} .mig__overlay-date {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: {{ section.settings.overlay_date_size }}px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: {{ section.settings.overlay_text_color }};
+    margin: 0;
+  }
+
+  /* ── Optional CTA on overlay ── */
+  {%- if section.settings.overlay_button_label != blank -%}
+  #mig-{{ section.id }} .mig__overlay-cta {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 11px 28px;
+    background-color: {{ section.settings.overlay_button_bg }};
+    color: {{ section.settings.overlay_button_color }};
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid {{ section.settings.overlay_button_border }};
+    transition: background-color 0.25s ease, color 0.25s ease;
+    cursor: pointer;
+  }
+  #mig-{{ section.id }} .mig__overlay-cta:hover {
+    background-color: transparent;
+    color: {{ section.settings.overlay_text_color }};
+    border-color: {{ section.settings.overlay_text_color }};
+  }
+  {%- endif -%}
+
+  /* ── TABLET ── */
+  @media screen and (max-width: 989px) {
+    #mig-{{ section.id }} {
+      grid-template-columns: repeat(2, 1fr);
+      height: auto;
+    }
+    #mig-{{ section.id }} .mig__panel {
+      height: {{ section.settings.mobile_panel_height }}px;
+    }
+    #mig-{{ section.id }} .mig__overlay-heading {
+      font-size: {{ section.settings.overlay_heading_size | times: 0.75 | round }}px;
+    }
+    #mig-{{ section.id }} .mig__overlay-content {
+      padding: 28px 24px;
+    }
+  }
+
+  /* ── MOBILE ── */
+  @media screen and (max-width: 480px) {
+    #mig-{{ section.id }} {
+      grid-template-columns: 1fr;
+    }
+    #mig-{{ section.id }} .mig__panel {
+      height: {{ section.settings.mobile_panel_height }}px;
+    }
+  }
+
+{%- endstyle -%}
+
+{{ 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap' | stylesheet_tag }}
+
+<div id="mig-{{ section.id }}" class="meuse-instagram-grid">
+
+  {%- for block in section.blocks -%}
+    {%- assign is_overlay_panel = false -%}
+    {%- if forloop.index == 2 and section.settings.show_overlay -%}
+      {%- assign is_overlay_panel = true -%}
+    {%- endif -%}
+
+    <div
+      class="mig__panel{% if is_overlay_panel %} mig__panel--has-overlay{% endif %}"
+      {{ block.shopify_attributes }}
+    >
+
+      {%- if block.settings.image != blank -%}
+        {{
+          block.settings.image
+          | image_url: width: 1200
+          | image_tag:
+            loading: 'lazy',
+            sizes: '25vw',
+            widths: '300, 500, 700, 900, 1200',
+            alt: block.settings.image.alt | default: section.settings.overlay_heading
+        }}
+      {%- else -%}
+        <div class="mig__placeholder">{{ 'image' | placeholder_svg_tag }}</div>
+      {%- endif -%}
+
+      {%- if is_overlay_panel -%}
+        <div class="mig__overlay"></div>
+        <div class="mig__overlay-content">
+
+          {%- if section.settings.overlay_eyebrow != blank -%}
+            <p class="mig__overlay-eyebrow">{{ section.settings.overlay_eyebrow }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.overlay_heading != blank -%}
+            <h2 class="mig__overlay-heading">{{ section.settings.overlay_heading }}</h2>
+          {%- endif -%}
+
+          {%- if section.settings.overlay_text != blank -%}
+            <div class="mig__overlay-text">{{ section.settings.overlay_text }}</div>
+          {%- endif -%}
+
+          {%- if section.settings.overlay_date != blank -%}
+            <p class="mig__overlay-date">{{ section.settings.overlay_date }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.overlay_button_label != blank -%}
+            <a
+              href="{{ section.settings.overlay_button_link | default: '#' }}"
+              class="mig__overlay-cta"
+            >{{ section.settings.overlay_button_label }}</a>
+          {%- endif -%}
+
+        </div>
+      {%- endif -%}
+
+    </div>
+  {%- endfor -%}
+
+</div>
+
+{% schema %}
+{
+  "name": "Meuse Instagram Grid",
+  "tag": "section",
+  "class": "meuse-instagram-section",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "panel",
+      "name": "Image Panel",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "📐 Layout"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section Height — Desktop (px)",
+      "min": 300,
+      "max": 900,
+      "step": 10,
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "mobile_panel_height",
+      "label": "Panel Height — Mobile (px)",
+      "min": 200,
+      "max": 700,
+      "step": 10,
+      "default": 420
+    },
+    {
+      "type": "header",
+      "content": "✍️ Panel 2 Text Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show text overlay on panel 2",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Background Color",
+      "default": "#2a2a25"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity (%)",
+      "min": 0,
+      "max": 95,
+      "step": 5,
+      "default": 45
+    },
+    {
+      "type": "color",
+      "id": "overlay_text_color",
+      "label": "Overlay Text Color",
+      "default": "#f5f2ed"
+    },
+    {
+      "type": "select",
+      "id": "overlay_valign",
+      "label": "Vertical Alignment",
+      "options": [
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center",     "label": "Center" },
+        { "value": "flex-end",   "label": "Bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "overlay_halign",
+      "label": "Horizontal Alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center",     "label": "Center" },
+        { "value": "flex-end",   "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "overlay_text_align",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left",   "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right",  "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "overlay_padding_v",
+      "label": "Overlay Padding — Vertical (px)",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "overlay_padding_h",
+      "label": "Overlay Padding — Horizontal (px)",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "📝 Overlay Content"
+    },
+    {
+      "type": "text",
+      "id": "overlay_eyebrow",
+      "label": "Eyebrow / Label",
+      "default": "Our 4 scents waiting for your routine",
+      "info": "Small label above the heading. Leave blank to hide."
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "label": "Eyebrow Size (px)",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "text",
+      "id": "overlay_heading",
+      "label": "Heading",
+      "default": "Lorem ipsum dolor sit amet consectetur."
+    },
+    {
+      "type": "range",
+      "id": "overlay_heading_size",
+      "label": "Heading Size — Desktop (px)",
+      "min": 18,
+      "max": 72,
+      "step": 1,
+      "default": 36
+    },
+    {
+      "type": "richtext",
+      "id": "overlay_text",
+      "label": "Body Paragraph",
+      "default": "<p>Ipsum eleifend elit malesuada enim iaculis integer sit elt. Eu enim eleifend semper condimentum varius vivamus.</p>"
+    },
+    {
+      "type": "range",
+      "id": "overlay_text_size",
+      "label": "Body Text Size (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "text",
+      "id": "overlay_date",
+      "label": "Date / Subline",
+      "default": "November 21, 2023",
+      "info": "Optional date or tagline below the body text. Leave blank to hide."
+    },
+    {
+      "type": "range",
+      "id": "overlay_date_size",
+      "label": "Date Size (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "🔘 Optional CTA Button (overlay)"
+    },
+    {
+      "type": "text",
+      "id": "overlay_button_label",
+      "label": "Button Label",
+      "info": "Leave blank to hide."
+    },
+    {
+      "type": "url",
+      "id": "overlay_button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "overlay_button_bg",
+      "label": "Button Background",
+      "default": "#f5f2ed"
+    },
+    {
+      "type": "color",
+      "id": "overlay_button_color",
+      "label": "Button Text Color",
+      "default": "#2a2a25"
+    },
+    {
+      "type": "color",
+      "id": "overlay_button_border",
+      "label": "Button Border Color",
+      "default": "#f5f2ed"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Meuse Instagram Grid",
+      "blocks": [
+        { "type": "panel" },
+        { "type": "panel" },
+        { "type": "panel" },
+        { "type": "panel" }
+      ]
+    }
+  ]
+}
+{% endschema %}
