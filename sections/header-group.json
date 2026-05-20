@@ -59,11 +59,86 @@
         "btn_color": "#ffffff",
         "btn_border_color": "#3a4a2f"
       }
+    },
+    "meuse_values_strip_MThNnx": {
+      "type": "meuse-values-strip",
+      "blocks": {
+        "icon_item_DMDVhR": {
+          "type": "icon_item",
+          "settings": {
+            "icon_svg": "<svg viewbox=\"0 0 48 48\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M24 42C24 42 8 30 8 18a16 16 0 0 1 32 0c0 12-16 24-16 24z\"></path><path d=\"M24 42V22\"></path><path d=\"M24 28c-4-4-10-6-14-4\"></path><path d=\"M24 22c4-4 10-5 13-3\"></path></svg>",
+            "label": "nature-based"
+          }
+        },
+        "icon_item_efcepN": {
+          "type": "icon_item",
+          "settings": {
+            "icon_svg": "<svg viewbox=\"0 0 48 48\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"24\" cy=\"24\" r=\"18\"></circle><path d=\"M18 20c0-2 1.5-4 4-4s4 2 4 2\"></path><path d=\"M26 20c0-2 1.5-3.5 3.5-3.5\"></path><ellipse cx=\"24\" cy=\"28\" rx=\"6\" ry=\"4\"></ellipse><path d=\"M20 24c0 0-2 1-2 3\"></path><path d=\"M28 24c0 0 2 1 2 3\"></path></svg>",
+            "label": "cruelty-free"
+          }
+        },
+        "icon_item_9RTqze": {
+          "type": "icon_item",
+          "settings": {
+            "icon_svg": "<svg viewbox=\"0 0 48 48\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"24\" cy=\"24\" r=\"18\"></circle><path d=\"M24 14c-6 0-10 5-10 10s4 10 10 10 10-5 10-10\"></path><path d=\"M24 24c2-4 6-8 10-10\"></path><path d=\"M24 24v10\"></path></svg>",
+            "label": "eco-friendly"
+          }
+        },
+        "icon_item_QrBy78": {
+          "type": "icon_item",
+          "settings": {
+            "icon_svg": "<svg viewbox=\"0 0 48 48\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"24\" cy=\"24\" r=\"6\"></circle><line x1=\"24\" y1=\"6\" x2=\"24\" y2=\"12\"></line><line x1=\"24\" y1=\"36\" x2=\"24\" y2=\"42\"></line><line x1=\"6\" y1=\"24\" x2=\"12\" y2=\"24\"></line><line x1=\"36\" y1=\"24\" x2=\"42\" y2=\"24\"></line><line x1=\"10.4\" y1=\"10.4\" x2=\"14.8\" y2=\"14.8\"></line><line x1=\"33.2\" y1=\"33.2\" x2=\"37.6\" y2=\"37.6\"></line><line x1=\"37.6\" y1=\"10.4\" x2=\"33.2\" y2=\"14.8\"></line><line x1=\"14.8\" y1=\"33.2\" x2=\"10.4\" y2=\"37.6\"></line></svg>",
+            "label": "organic"
+          }
+        }
+      },
+      "block_order": [
+        "icon_item_DMDVhR",
+        "icon_item_efcepN",
+        "icon_item_9RTqze",
+        "icon_item_QrBy78"
+      ],
+      "name": "Meuse Values Strip",
+      "settings": {
+        "bg_color": "#f0ece3",
+        "text_color": "#2a2a2a",
+        "icon_color": "#2a2a2a",
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "tagline": "<p>Crafted with a thoughtful focus on your mind, body, and surroundings, step into the world of Meuse.</p>",
+        "tagline_font_size": 18,
+        "tagline_font_size_mobile": 16,
+        "label_font_size": 13,
+        "label_font_size_mobile": 11
+      }
+    },
+    "meuse_text_image_split_D7PHVF": {
+      "type": "meuse-text-image-split",
+      "name": "Meuse Text-Image Split",
+      "settings": {
+        "image": "shopify://shop_images/623326c8ab05e1f36811e718ee4e5420447c4304.jpg",
+        "section_bg": "#ffffff",
+        "block_bg": "#d2d7cb",
+        "heading_color": "#2a2a2a",
+        "text_color": "#2a2a2a",
+        "heading": "Simple, natural solutions that work.",
+        "text": "<p>At Meuse, we believe that nature has the power to soothe and calm the mind. That is why we focus on creating 100% natural products that are designed to fit seamlessly into your daily routines, and infuse them with moments of purposeful care.</p>",
+        "heading_size": 28,
+        "text_size": 18,
+        "padding_top_desktop": 85,
+        "padding_bottom_desktop": 85,
+        "heading_size_mobile": 22,
+        "text_size_mobile": 15,
+        "padding_top_mobile": 30,
+        "padding_bottom_mobile": 30
+      }
     }
   },
   "order": [
     "announcement-bar",
     "header",
-    "meuse_hero_banner_bjUjQ7"
+    "meuse_hero_banner_bjUjQ7",
+    "meuse_values_strip_MThNnx",
+    "meuse_text_image_split_D7PHVF"
   ]
 }
