@@ -6,32 +6,34 @@
 {% endcomment %}
 
 {%- style -%}
-  /* ── Main Section Wrapper ───────────────────────────── */
+  /* ── Structural Container ────────────────────────────── */
   #mtis-{{ section.id }} {
     position: relative;
     width: 100%;
-    min-height: {{ section.settings.section_height_desktop }}px;
+    height: {{ section.settings.section_height_desktop }}px;
     background-color: {{ section.settings.section_bg }};
     overflow: hidden;
-    display: flex;
-    align-items: center;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
 
-  /* ── 50/50 Split Grid (Edge-to-Edge) ─────────────────── */
+  /* ── Grid Layout (Forcing Perfect 50/50 Viewport Split) ─ */
   #mtis-{{ section.id }} .mtis__grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: 100%;
-    min-height: {{ section.settings.section_height_desktop }}px;
+    grid-template-columns: 50vw 50vw;
+    width: 100vw;
+    height: 100%;
     position: relative;
-    z-index: 2; /* Sits above the background vectors */
+    z-index: 2;
   }
 
-  /* ── Left Side: Image ────────────────────────────────── */
+  /* ── Left Side Image (Locked Flush Left) ──────────────── */
   #mtis-{{ section.id }} .mtis__image-column {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    margin: 0;
+    padding: 0;
   }
 
   #mtis-{{ section.id }} .mtis__image-column img,
@@ -46,73 +48,81 @@
     background-color: #e2e2e2;
   }
 
-  /* ── Right Side: Text Card ───────────────────────────── */
+  /* ── Right Side Text Card (Locked Flush Right) ────────── */
   #mtis-{{ section.id }} .mtis__text-column {
     background-color: {{ section.settings.block_bg }};
     height: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Aligned to the top to match design layout */
     justify-content: flex-start;
-    padding: 5% 10% 5% 12%; /* Generous inner spacing matching Figma */
+    padding: 120px 12% 60px 10%; /* Upper elevation push */
     box-sizing: border-box;
   }
 
   #mtis-{{ section.id }} .mtis__content {
-    max-width: 540px; /* Prevents text from stretching too wide */
+    max-width: 520px;
     width: 100%;
   }
 
-  /* ── Typography ──────────────────────────────────────── */
+  /* ── Typography Styling ──────────────────────────────── */
   #mtis-{{ section.id }} .mtis__heading {
     font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: {{ section.settings.heading_size }}px;
     font-weight: 400;
-    line-height: 1.25;
+    line-height: 1.3;
     color: {{ section.settings.heading_color }};
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin: 0 0 28px 0;
+    margin: 0 0 32px 0;
   }
 
   #mtis-{{ section.id }} .mtis__text {
     font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: {{ section.settings.text_size }}px;
     font-weight: 400;
-    line-height: 1.65;
+    line-height: 1.7;
     color: {{ section.settings.text_color }};
-    letter-spacing: 0.01em;
+    letter-spacing: 0.02em;
     margin: 0;
   }
 
   #mtis-{{ section.id }} .mtis__text p {
-    margin: 0 0 18px 0;
+    margin: 0 0 20px 0;
   }
   #mtis-{{ section.id }} .mtis__text p:last-child {
     margin: 0;
   }
 
-  /* ── Vector Topography Elements ───────────────────────── */
+  /* ── Background Vector Art Layers ─────────────────────── */
+  #mtis-{{ section.id }} .mtis__vector-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Renders safely below the main copy layout grid */
+    pointer-events: none;
+  }
+
   #mtis-{{ section.id }} .mtis__vector {
     position: absolute;
-    z-index: 1;
-    pointer-events: none;
     opacity: {{ section.settings.vector_opacity | divided_by: 100.0 }};
   }
 
-  /* Top Right Vector Box */
+  /* Top Right Vector Adjustment */
   #mtis-{{ section.id }} .mtis__vector--top-right {
     top: 0;
     right: 0;
-    width: clamp(250px, 22vw, 420px);
-    transform: translate(5%, -5%); /* Shifts slightly out like the design */
+    width: 32vw;
+    max-width: 480px;
   }
 
-  /* Bottom Left Vector Box */
+  /* Bottom Left Vector Adjustment */
   #mtis-{{ section.id }} .mtis__vector--bottom-left {
     bottom: 0;
     left: 0;
-    width: clamp(220px, 18vw, 340px);
-    transform: translate(-5%, 5%);
+    width: 25vw;
+    max-width: 380px;
   }
 
   #mtis-{{ section.id }} .mtis__vector svg {
@@ -121,42 +131,41 @@
     display: block;
   }
 
-  /* ── Responsive Mobile/Tablet Breakdowns ──────────────── */
+  /* ── Responsive Scaling Breaks ────────────────────────── */
   @media screen and (max-width: 989px) {
     #mtis-{{ section.id }} {
-      min-height: auto;
-      display: block;
+      height: auto;
     }
 
     #mtis-{{ section.id }} .mtis__grid {
       grid-template-columns: 1fr;
-      min-height: auto;
+      width: 100%;
+      height: auto;
     }
 
     #mtis-{{ section.id }} .mtis__image-column {
-      height: 450px; /* Fixed proportional height for mobile viewports */
+      height: 550px;
     }
 
     #mtis-{{ section.id }} .mtis__text-column {
-      padding: 60px 24px;
-      justify-content: center;
+      padding: 60px 32px;
+      align-items: center;
     }
 
     #mtis-{{ section.id }} .mtis__heading {
       font-size: {{ section.settings.heading_size_mobile }}px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     #mtis-{{ section.id }} .mtis__text {
       font-size: {{ section.settings.text_size_mobile }}px;
     }
 
-    /* scale down background vectors safely for mobile screen spaces */
     #mtis-{{ section.id }} .mtis__vector--top-right {
-      width: 180px;
+      width: 200px;
     }
     #mtis-{{ section.id }} .mtis__vector--bottom-left {
-      width: 140px;
+      width: 160px;
     }
   }
 {%- endstyle -%}
@@ -165,27 +174,29 @@
 
 <div id="mtis-{{ section.id }}" class="meuse-text-image-split">
   
-  <div class="mtis__vector mtis__vector--top-right">
-    <svg viewBox="0 0 357 282" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M72.5 0C110.5 83.5 240.5 45.5 357 101M0 45C86.5 111.5 158.5 20.5 357 149M0 115C118.5 186.5 143.5 69.5 357 197.5M0 191.5C149.5 261 179.5 119.5 357 241M41 281.5C193.5 329.5 233.5 178 357 281.5" stroke="{{ section.settings.vector_color }}" stroke-width="0.6"/>
-    </svg>
-  </div>
+  <div class="mtis__vector-layer">
+    <div class="mtis__vector mtis__vector--top-right">
+      <svg viewBox="0 0 357 282" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M72.5 0C110.5 83.5 240.5 45.5 357 101M0 45C86.5 111.5 158.5 20.5 357 149M0 115C118.5 186.5 143.5 69.5 357 197.5M0 191.5C149.5 261 179.5 119.5 357 241M41 281.5C193.5 329.5 233.5 178 357 281.5" stroke="{{ section.settings.vector_color }}" stroke-width="0.7"/>
+      </svg>
+    </div>
 
-  <div class="mtis__vector mtis__vector--bottom-left">
-    <svg viewBox="0 0 294 227" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 0C46.5 36.5 83 91.5 59.5 137.5C36 183.5 -17.5 192.5 0 227M0 49C78.5 85.5 125.5 127 109 167C92.5 207 41.5 208.5 54 227M0 102C106 136.5 162.5 160 152 192C141.5 224 99.5 219.5 108.5 227M0 151.5C124 179.5 190.5 191 189 211C187.5 231 154.5 224.5 160.5 227M0 199.5C136 218 214 221.5 217.5 225C221 228.5 199.5 226.5 204.5 227" stroke="{{ section.settings.vector_color }}" stroke-width="0.6"/>
-    </svg>
+    <div class="mtis__vector mtis__vector--bottom-left">
+      <svg viewBox="0 0 294 227" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 0C46.5 36.5 83 91.5 59.5 137.5C36 183.5 -17.5 192.5 0 227M0 49C78.5 85.5 125.5 127 109 167C92.5 207 41.5 208.5 54 227M0 102C106 136.5 162.5 160 152 192C141.5 224 99.5 219.5 108.5 227M0 151.5C124 179.5 190.5 191 189 211C187.5 231 154.5 224.5 160.5 227M0 199.5C136 218 214 221.5 217.5 225C221 228.5 199.5 226.5 204.5 227" stroke="{{ section.settings.vector_color }}" stroke-width="0.7"/>
+      </svg>
+    </div>
   </div>
 
   <div class="mtis__grid">
     
     <div class="mtis__image-column">
       {%- if section.settings.image != blank -%}
-        {%- capture sizes -%}(min-width: 990px) 50vw, 100vw{%- endcapture -%}
-        {{ section.settings.image | image_url: width: 1600 | image_tag:
+        {%- capture sizes -%}50vw{%- endcapture -%}
+        {{ section.settings.image | image_url: width: 1800 | image_tag:
           loading: 'lazy',
           sizes: sizes,
-          widths: '400, 600, 800, 1000, 1200, 1400, 1600',
+          widths: '600, 800, 1000, 1200, 1400, 1600, 1800',
           alt: section.settings.heading
         }}
       {%- else -%}
@@ -218,132 +229,116 @@
   "settings": [
     {
       "type": "header",
-      "content": "Media Asset"
+      "content": "Media Content Asset"
     },
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Section Image"
+      "label": "Section Image Source"
     },
     {
       "type": "header",
-      "content": "Section Configuration"
+      "content": "Section Sizing Setup"
     },
     {
       "type": "range",
       "id": "section_height_desktop",
       "label": "Desktop Height (px)",
-      "min": 500,
-      "max": 1200,
+      "min": 600,
+      "max": 1100,
       "step": 4,
       "default": 952
     },
     {
       "type": "color",
       "id": "section_bg",
-      "label": "Outer Canvas Background",
+      "label": "Section Background Canvas",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "block_bg",
-      "label": "Text Block Background Box",
+      "label": "Text Block Background Color",
       "default": "#d2d7cb"
     },
     {
       "type": "header",
-      "content": "Vector Lines Artwork"
+      "content": "Vector Artwork Properties"
     },
     {
       "type": "color",
       "id": "vector_color",
-      "label": "Vector Stroke Color",
+      "label": "Vector Path Stroke Color",
       "default": "#2a2a2a"
     },
     {
       "type": "range",
       "id": "vector_opacity",
-      "label": "Vector Opacity (%)",
-      "min": 10,
+      "label": "Vector Line Opacity (%)",
+      "min": 5,
       "max": 100,
       "step": 5,
-      "default": 30
+      "default": 35
     },
     {
       "type": "header",
-      "content": "Typography Colors"
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading Text Color",
-      "default": "#2a2a2a"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Body Text Color",
-      "default": "#2a2a2a"
-    },
-    {
-      "type": "header",
-      "content": "Typography Text Content"
+      "content": "Typography Copy Elements"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading Text",
+      "label": "Heading Content String",
       "default": "Simple, natural solutions that work."
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Body Paragraph Text",
+      "label": "Body Copy Paragraph Text",
       "default": "<p>At Meuse, we believe that nature has the power to soothe and calm the mind. That is why we focus on creating 100% natural products that are designed to fit seamlessly into your daily routines, and infuse them with moments of purposeful care.</p>"
     },
     {
       "type": "header",
-      "content": "Desktop Sizing"
+      "content": "Desktop Text Configurations"
     },
     {
       "type": "range",
       "id": "heading_size",
       "label": "Heading Font Size (px)",
-      "min": 18,
-      "max": 48,
+      "min": 20,
+      "max": 60,
       "step": 1,
-      "default": 28
+      "default": 34
     },
     {
       "type": "range",
       "id": "text_size",
       "label": "Body Font Size (px)",
       "min": 14,
-      "max": 24,
+      "max": 28,
       "step": 1,
       "default": 18
     },
     {
       "type": "header",
-      "content": "Mobile Sizing"
+      "content": "Mobile Text Configurations"
     },
     {
       "type": "range",
       "id": "heading_size_mobile",
       "label": "Heading Mobile Font Size (px)",
       "min": 16,
-      "max": 36,
+      "max": 40,
       "step": 1,
-      "default": 22
+      "default": 24
     },
     {
       "type": "range",
       "id": "text_size_mobile",
       "label": "Body Mobile Font Size (px)",
       "min": 12,
-      "max": 20,
+      "max": 22,
       "step": 1,
-      "default": 15
+      "default": 16
     }
   ],
   "presets": [
